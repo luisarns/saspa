@@ -1,0 +1,3 @@
+Color del Background
+
+#EEEEEE

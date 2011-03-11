@@ -1,0 +1,46 @@
+Con la actualizacion de la historia de usuario HU-MAS-04.4 por HU-MAS-04.4v2  se hace necesario
+actualizar el modelo de datos del sistema. Hay que cambiar la(s) tabla(s) relacionadas con esta
+historia de usuario, para agregar las actualizaciones. En este caso hay que eliminar la tabla
+becas y num_periodo_becas ya que esta información fue eliminada del sistema con el cambio además
+se debe modificar la tabla presupuesto_egresos para incluir los campos agregados con el cambio y 
+suprimir los campos que ya no son necesarios.
+
+El orden para las modificacion del modelo es la siguiente
+
+-1 Eliminar la tabla num_periodo_beca -*-
+-2 Eliminar la tabla becas -*-
+-3 Modificar la tabla presupuesto_egresos
+
+-3 Modificando la tabla presupuesto_egresos
+
+A esta tabla se le quitaran los campos, para el ingreso de horas
+* peg_hse_cord_pregrado
+* peg_hse_cord_postgrado
+* peg_hse_dir_pregrado
+* peg_hse_dir_postgrado
+
+y agregarle los campos 
+* peg_hse_cord_programa
+* peg_sm_direccion
+* peg_sm_coordinacion
+* peg_sm_otro_nombre
+* peg_sm_otro_valor
+
+
+-Al hacer esta modificacion en la tabla hay que modificar el proceso de simulacion y revision de una
+solicitud
+
+//TERMINADO MODIFICACION EXITOSA
+
+
+//Definicion del parametro del sistema decersion
+
+Tabla  : desercion
+campos :
+- sede
+- facultad
+- tipo_programa
+- periodo
+- desercion
+
+

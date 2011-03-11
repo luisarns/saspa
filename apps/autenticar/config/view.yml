@@ -1,0 +1,51 @@
+default:
+  http_metas:
+    content-type: text/html
+
+  metas:
+    title:        symfony project
+    robots:       index, follow
+    description:  symfony project
+    keywords:     symfony, project
+    language:     en
+
+  stylesheets:    [main]
+
+  javascripts:    []
+
+  has_layout:     on
+  layout:         layout
+
+loginSuccess:
+  http_metas:
+  content-type: text/html
+
+  javascripts:    [md5, login]
+  stylesheets:    [main, login]
+  
+  metas:
+    title:        Ingreso SASPA
+    robots:       index, follow
+    description:  Ingreso SASPA
+    keywords:     SASPA, Univalle
+    language:     es
+  
+  has_layout:     on
+  layout:         layout
+
+indexSuccess:
+  http_metas:
+    content-type: text/html
+  
+  javascripts:    [extjs/adapter/ext/ext-base.js, extjs/ext-all-debug.js, extjs/build/locale/ext-lang-es.js, global, indicadores/AutoGridPanel.js, Ext.ux.grid.Search.js, planeacion/metaForm.js, MultiSelect.js]
+  stylesheets:    [main, extjs/resources/css/ext-all.css, administracion/administracion.css]
+  
+  metas:
+    title:        SASPA
+    robots:       index, follow
+    description:  SASPA
+    keywords:     SASPA, Univalle
+    language:     es
+  
+  has_layout:     on
+  layout:         layout

@@ -1,0 +1,112 @@
+@charset "utf-8";
+/* CSS Document */
+
+html, body {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-weight:bold;
+    background-color: white;
+    font-size: 12px;
+    margin: 0px; 
+    text-align:center;
+}
+
+#fondo{ 
+        background-image: url(../images/imagenes/fondo.jpg);
+        width:1016px;
+        height:540px;
+        border: medium double rgb(0,0,0);
+        margin-left: auto;
+        margin-right: auto; 
+}
+
+#centro{
+        background-color: white;
+        width:1016px;
+        height:500px;
+        margin-top:20px;
+       
+}
+
+#barrasup{
+       background-image: url(../images/imagenes/barra.jpg);
+       width:1016px;
+       height:23px;
+       margin-top:0px;
+}
+
+#barrainf{
+       background-image: url(../images/imagenes/barra.jpg);
+       width:1016px;
+       height:23px;
+}
+
+#logos{
+    height:454px;
+    width:1016px;
+}
+
+#logosipi{
+      background-image: url(../images/imagenes/logo_sipi.jpg);
+      background-repeat: no-repeat;
+      width:514px;
+      height:103px;
+      float:left;
+      margin-top:50px;
+      margin-left:30px;
+}
+
+#logosaspa{
+      background-image: url(../images/imagenes/logo_saspa.jpg);
+      background-repeat: no-repeat;
+      width:514px;
+      height:103px;
+      float:left;
+      margin-top:50px;
+      margin-left:30px;
+}
+
+#saspa{
+       background-image: url(../images/imagenes/saspa.jpg);
+       width:350px;
+       height:103px;
+       background-repeat: no-repeat;
+       margin-top:50px;
+       margin-left:50px;
+       float:left;
+}
+
+#logounivalle{
+       background-image: url(../images/imagenes/logo_univalle.gif);
+       width:350px;
+       height:103px;
+       background-repeat: no-repeat;
+       margin-top:50px;
+       margin-left:50px;
+       float:left;
+}
+
+#camposLog{
+    margin-left:315px;
+}
+
+.btn{
+    padding-top:10px;
+    text-align:right;
+}
+
+.etiqueta{
+    text-align:right;
+    font-size:12pt;
+}
+
+.subtitulo{
+    text-align:left;
+    font-size:14pt;
+    padding-top:200px;
+    padding-left:279px;
+
+}
+
+#informe{
+     font-size:10pt;
+}

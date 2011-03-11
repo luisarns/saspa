@@ -1,0 +1,5 @@
+all:
+  propel:
+    class:          sfPropelDatabase
+    param:
+      dsn:          pgsql://saspa:saspa@127.0.0.1/aspa

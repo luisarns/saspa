@@ -1,0 +1,166 @@
+propel:
+  rol:
+    _attributes:       { phpName: Rol, idMethod: none }
+    rol_identificador: { type: varchar(10), primaryKey: true }
+    rol_nombre:        { type: varchar(50) }
+    rol_url_menu:      { type: longvarchar }
+    rol_url_inicio:    { type: longvarchar }
+
+  usuario:
+    _attributes:       { phpName: Usuario, idMethod: none }
+    usu_identificador: { type: varchar(30), primaryKey: true }
+    usu_contrasena:    { type: longvarchar, required: true }
+    usu_nombre:        { type: varchar(50) }
+    usu_apellidos:     { type: varchar(50) }
+    usu_estado:        { type: varchar(2) }
+    usu_rol:           { type: varchar(10), foreignTable: rol, foreignReference: rol_identificador, onDelete : cascade }
+
+  solicitud:
+    _attributes:  { phpName: Solicitud, idMethod: native }
+    sol_id:       { type: integer, autoIncrement: true, primaryKey: true }
+    sol_nombre:   { type: varchar(50) }
+    sol_escuela:  { type: varchar(80) }
+    sol_facultad: { type: varchar(80) }
+    sol_archivo:  { type: varchar(40) }
+    sol_estado:   { type: varchar(20), required: true }
+    sol_usuario:  { type: varchar(30), foreignTable: usuario, foreignReference: usu_identificador, onDelete : cascade }
+    created_at:
+    updated_at:
+
+  comentario:
+    _attributes:     { phpName: Comentario, idMethod: native }
+    com_id:          { type: integer, autoIncrement: true, primaryKey: true }
+    com_solicitud:   { type: integer, foreignTable: solicitud, foreignReference: sol_id , onDelete : cascade }
+    com_descripcion: { type: varchar(500) }
+    com_usuario:     { type: varchar(30), foreignTable: usuario, foreignReference: usu_identificador, onDelete : cascade }
+    com_sol_estado:  { type: varchar(20) }
+    created_at:
+
+  valor_hora_docente:
+    _attributes:              { phpName: ValorHoraDocente, idMethod: none }
+    vhd_nivel_programa:       { type: varchar(20), primaryKey: true }
+    vhd_categoria_docente:    { type: varchar(20), primaryKey: true }
+    nombrado_bonificado:      { type: float }
+    nombrado_carga_academica: { type: float }
+    hora_catedra:             { type: float }
+
+
+  informacion_general:
+    _attributes:           { phpName: InformacionGeneral, idMethod: native }
+    ing_id:                { type: integer, autoIncrement: true, primaryKey: true }
+    ing_sol_id:            { type: integer, foreignTable: solicitud, foreignReference: sol_id , onDelete : cascade}
+    ing_fecha:             { type: date}
+    ing_solicitante:       { type: varchar(100)}
+    ing_facultad:          { type: varchar(80) }
+    ing_escuela:           { type: varchar(80) }
+    ing_nombre_programa:   { type: varchar(100) }
+    ing_titulo_otorga:     { type: varchar(80) }
+    ing_motivo_solicitud:  { type: varchar(20) }
+    ing_cual_motivo:       { type: varchar(50) }
+    ing_ciudad_sede:       { type: varchar(50) }
+    ing_nivel_academico:   { type: varchar(40) }
+    ing_duracion_programa: { type: integer }
+    ing_jornada:           { type: varchar(15) }
+    ing_tipo_modalidad:    { type: varchar(15) }
+    ing_tipo_valor:        { type: varchar(25) }
+    ing_forma_pago:        { type: varchar(20) }
+    ing_valor:             { type: float }
+
+  extructura_curricular:
+    _attributes:                { phpName: ExtructuraCurricular, idMethod: native }
+    ecu_id:                     { type: integer, autoIncrement: true, primaryKey: true }
+    ecu_sol_id:                 { type: integer, foreignTable: solicitud, foreignReference: sol_id, onDelete : cascade }
+    ecu_periodo_academico:      { type: integer }
+    ecu_asignatura:             { type: varchar(100) }
+    ecu_num_creditos:           { type: integer }
+    ecu_total_horas:            { type: integer }
+    ecu_num_programa_comparte:  { type: integer }
+    ecu_categoria_docente:      { type: varchar(15) }
+    ecu_horas_dictadas_como:    { type: varchar(20) }
+    ecu_valor_hora:             { type: float }
+
+  valor_diferenciado:
+    _attributes: { phpName: ValorDiferenciado , idMethod: none }
+    vad_ing_id:  { type: integer, foreignTable: informacion_general, foreignReference: ing_id, primaryKey : true , onDelete : cascade }
+    vad_periodo: { type: integer, primaryKey : true }    
+    vad_valor:   { type: float }
+
+  presupuesto_ingresos:
+    _attributes:             { phpName: PresupuestoIngresos , idMethod: native }
+    pin_id:                  { type: integer, autoIncrement: true, primaryKey: true }
+    pin_sol_id:              { type: integer, foreignTable: solicitud, foreignReference: sol_id , onDelete : cascade}
+    pin_numero_inscritos:    { type: integer, required: true }
+    pin_numero_matriculados: { type: integer, required: true }
+    pin_exenciones:          { type: integer }
+
+  fuentes_externas:
+    _attributes: { phpName: FuentesExternas , idMethod: native }
+    fue_id:      { type: integer, autoIncrement: true, primaryKey : true }
+    fue_sol_id:  { type: integer, foreignTable: solicitud, foreignReference: sol_id, onDelete : cascade }
+    fue_nombre:  { type: varchar(100) }
+    
+  contribucion_fuente_externa:
+    _attributes: { phpName: ContribucionFuenteExterna , idMethod: none }
+    cfe_pin_id:  { type: integer, foreignTable: presupuesto_ingresos, foreignReference: pin_id, primaryKey: true, onDelete : cascade }
+    cfe_fue_id:  { type: integer, foreignTable: fuentes_externas, foreignReference: fue_id, primaryKey: true, onDelete : cascade }
+    cfe_periodo: { type: integer, primaryKey: true }
+    cfe_valor:   { type: float }
+
+  presupuesto_egresos:
+    _attributes:                { phpName: PresupuestoEgresos , idMethod: native }
+    peg_id:                     { type: integer, autoIncrement: true, primaryKey: true }
+    peg_sol_id:                 { type: integer, foreignTable: solicitud, foreignReference: sol_id, onDelete : cascade }
+    peg_hse_cord_programa:      { type: integer }
+    peg_hse_secretaria:         { type: integer }
+    peg_hse_aux_administrativo: { type: integer }
+    peg_hse_monitorias:         { type: integer }
+    peg_sm_direccion:           { type: float }
+    peg_sm_coordinacion:        { type: float }
+    peg_sm_otro_nombre:         { type: float }
+    peg_sm_otro_valor:          { type: float }
+
+  concepto_gastos:
+    _attributes:  { phpName: ConceptoGastos , idMethod: native }
+    cog_id:       { type: integer, autoIncrement: true, primaryKey: true }
+    cog_sol_id:   { type: integer, foreignTable: solicitud, foreignReference: sol_id, onDelete : cascade }
+    cog_concepto: { type: varchar(100) }
+    cog_tipo:     { type: varchar(15), required: true }
+
+  inversiones_gastos_generales:
+    _attributes:  { phpName: GastosGenerales , idMethod: native }
+    igg_cog_id:   { type: integer, foreignTable: concepto_gastos, foreignReference: cog_id, primaryKey: true, onDelete : cascade }  
+    igg_periodo:  { type: integer , primaryKey: true }
+    igg_costo:    { type: float }
+
+  historico_analisis:
+    _attributes:   { phpName: HistoricoAnalisis , idMethod: native }
+    hia_estado:    { type: varchar(25), required: true  }
+    hia_solicitud: { type: integer, foreignTable: solicitud, foreignReference: sol_id, onDelete : cascade }
+    hia_usuario:   { type: varchar(30), foreignTable: usuario, foreignReference: usu_identificador, onDelete : cascade }
+    created_at:
+
+  facultad:
+    _attributes:   { phpName: Facultad , idMethod: native }
+    fac_id:        { type: integer, autoIncrement: true, primaryKey: true }
+    fac_nombre:    { type : varchar(100) }
+
+  dependencia:
+    dep_codigo:    { type : varchar(40) , primaryKey : true }
+    dep_facultad:  { type : integer , foreignTable: facultad, foreignReference: fac_id, onDelete : cascade }
+    dep_nombre:    { type : varchar(100) }
+
+  docentes:
+    cedula:      { type : varchar(40) , primaryKey : true }
+    nombre:      { type : varchar(40) }
+    apellidos:   { type : varchar(80) }
+    facultad:    { type : varchar(100) }
+    dependencia: { type : varchar(100) }
+    categoria:   { type : varchar(40) }
+
+  decersion:
+    _attributes:      { phpName: Decersion , idMethod: native }
+    dec_id:           { type: integer, autoIncrement: true, primaryKey: true }
+    dec_sede:         { type : varchar(80) }
+    dec_facultad:     { type : integer,  foreignTable : facultad,    foreignReference : fac_id,     onDelete : cascade }
+    dec_tipo_progama:  { type : varchar(40) }
+    dec_periodo:      { type : integer }

@@ -1,0 +1,44 @@
+.icon-logo {
+  background: url(../images/logos.png) 0 6px no-repeat !important;
+}
+
+.foto{
+  background-image:url(../images/usuario.jpg);
+  background-repeat:no-repeat;
+  visibility:visible;
+}
+
+.icon-buscar{
+  background-image: url(../../images/zoom.png) !important;
+/*   background-repeat:no-repeat; */
+}
+.usu-hab{
+  background-image: url(../../images/activos.png) !important;
+/*   background-repeat:no-repeat; */
+}
+.diligenciar{
+  background-image: url(../../images/iconos/building_edit.png) !important;
+/*   background-repeat:no-repeat; */
+}
+
+.delete{
+  background-image: url(../../images/delete.png) !important;
+/*   background-repeat:no-repeat; */
+}
+.usu-deshab{
+  background-image: url(../../images/inactivos.png) !important;
+/*   background-repeat:no-repeat; */
+}
+.usu-nuevo{
+  background-image: url(../../images/add.png) !important;
+/*   background-repeat:no-repeat; */
+}
+
+.sue_icono_ayuda{
+     background-image:url(../../images/help.png)  !important;
+}
+
+.comentarios{
+	background-image: url(../../images/comments.png) !important;
+}
+
