@@ -67,9 +67,7 @@ abstract class BaseRol extends BaseObject  implements Persistent {
 	public function setRolIdentificador($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -83,9 +81,7 @@ abstract class BaseRol extends BaseObject  implements Persistent {
 	public function setRolNombre($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -99,9 +95,7 @@ abstract class BaseRol extends BaseObject  implements Persistent {
 	public function setRolUrlMenu($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -115,9 +109,7 @@ abstract class BaseRol extends BaseObject  implements Persistent {
 	public function setRolUrlInicio($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 

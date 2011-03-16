@@ -130,9 +130,7 @@ abstract class BasePresupuestoEgresos extends BaseObject  implements Persistent 
 	public function setPegId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -146,9 +144,7 @@ abstract class BasePresupuestoEgresos extends BaseObject  implements Persistent 
 	public function setPegSolId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -166,9 +162,7 @@ abstract class BasePresupuestoEgresos extends BaseObject  implements Persistent 
 	public function setPegHseCordPrograma($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -182,9 +176,7 @@ abstract class BasePresupuestoEgresos extends BaseObject  implements Persistent 
 	public function setPegHseSecretaria($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -198,9 +190,7 @@ abstract class BasePresupuestoEgresos extends BaseObject  implements Persistent 
 	public function setPegHseAuxAdministrativo($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -214,9 +204,7 @@ abstract class BasePresupuestoEgresos extends BaseObject  implements Persistent 
 	public function setPegHseMonitorias($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 

@@ -51,9 +51,7 @@ abstract class BaseFacultad extends BaseObject  implements Persistent {
 	public function setFacId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -67,9 +65,7 @@ abstract class BaseFacultad extends BaseObject  implements Persistent {
 	public function setFacNombre($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 

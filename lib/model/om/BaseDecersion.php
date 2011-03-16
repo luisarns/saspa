@@ -75,9 +75,7 @@ abstract class BaseDecersion extends BaseObject  implements Persistent {
 	public function setDecId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -91,9 +89,7 @@ abstract class BaseDecersion extends BaseObject  implements Persistent {
 	public function setDecSede($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -107,9 +103,7 @@ abstract class BaseDecersion extends BaseObject  implements Persistent {
 	public function setDecFacultad($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -127,9 +121,7 @@ abstract class BaseDecersion extends BaseObject  implements Persistent {
 	public function setDecTipoProgama($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -143,9 +135,7 @@ abstract class BaseDecersion extends BaseObject  implements Persistent {
 	public function setDecPeriodo($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 

@@ -53,9 +53,7 @@ abstract class BaseValorDiferenciado extends BaseObject  implements Persistent {
 	public function setVadIngId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -73,9 +71,7 @@ abstract class BaseValorDiferenciado extends BaseObject  implements Persistent {
 	public function setVadPeriodo($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 

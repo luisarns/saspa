@@ -72,9 +72,7 @@ abstract class BaseValorHoraDocente extends BaseObject  implements Persistent {
 	public function setVhdNivelPrograma($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -88,9 +86,7 @@ abstract class BaseValorHoraDocente extends BaseObject  implements Persistent {
 	public function setVhdCategoriaDocente($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 

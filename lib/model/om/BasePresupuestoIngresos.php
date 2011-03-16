@@ -81,9 +81,7 @@ abstract class BasePresupuestoIngresos extends BaseObject  implements Persistent
 	public function setPinId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -97,9 +95,7 @@ abstract class BasePresupuestoIngresos extends BaseObject  implements Persistent
 	public function setPinSolId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -117,9 +113,7 @@ abstract class BasePresupuestoIngresos extends BaseObject  implements Persistent
 	public function setPinNumeroInscritos($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -133,9 +127,7 @@ abstract class BasePresupuestoIngresos extends BaseObject  implements Persistent
 	public function setPinNumeroMatriculados($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -149,9 +141,7 @@ abstract class BasePresupuestoIngresos extends BaseObject  implements Persistent
 	public function setPinExenciones($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 

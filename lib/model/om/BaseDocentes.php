@@ -83,9 +83,7 @@ abstract class BaseDocentes extends BaseObject  implements Persistent {
 	public function setCedula($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -99,9 +97,7 @@ abstract class BaseDocentes extends BaseObject  implements Persistent {
 	public function setNombre($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -115,9 +111,7 @@ abstract class BaseDocentes extends BaseObject  implements Persistent {
 	public function setApellidos($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -131,9 +125,7 @@ abstract class BaseDocentes extends BaseObject  implements Persistent {
 	public function setFacultad($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -147,9 +139,7 @@ abstract class BaseDocentes extends BaseObject  implements Persistent {
 	public function setDependencia($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -163,9 +153,7 @@ abstract class BaseDocentes extends BaseObject  implements Persistent {
 	public function setCategoria($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 

@@ -1,0 +1,13 @@
+Marzo 15 de 2011 8:00 pm
+El comando symfony propel-build-model me genera el siguiente error:
+[phingcall] Unable to return 'affix' for unknown CreoleType:
+Solucion:
+Removal of PHP 5.3 deprecated set_magic_quotes_runtime in sfFileChache.class.php
+Fuente: https://github.com/xavismeh/symfony1.0-backports/commit/9fa8d4244ee516f1e20af2a073f353b5cc27d224
+Resultado: Sigue igual
+
+8:05 pm
+Solucion: Cambiar el tipo de la constante in CreoleTypes.php linea 39
+const TEXT = 30; //php 5.3.0 fix, usando un entero no usado
+Fuente: http://www.alexfilatov.com/2009/12/09/symfony-unable-to-return-affix-for-unknown-creoletype/
+Resultado: Funciono

@@ -104,9 +104,7 @@ abstract class BaseComentario extends BaseObject  implements Persistent {
 	public function setComId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -120,9 +118,7 @@ abstract class BaseComentario extends BaseObject  implements Persistent {
 	public function setComSolicitud($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -140,9 +136,7 @@ abstract class BaseComentario extends BaseObject  implements Persistent {
 	public function setComDescripcion($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -156,9 +150,7 @@ abstract class BaseComentario extends BaseObject  implements Persistent {
 	public function setComUsuario($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -176,9 +168,7 @@ abstract class BaseComentario extends BaseObject  implements Persistent {
 	public function setComSolEstado($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 

@@ -104,9 +104,7 @@ abstract class BaseUsuario extends BaseObject  implements Persistent {
 	public function setUsuIdentificador($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -120,9 +118,7 @@ abstract class BaseUsuario extends BaseObject  implements Persistent {
 	public function setUsuContrasena($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -136,9 +132,7 @@ abstract class BaseUsuario extends BaseObject  implements Persistent {
 	public function setUsuNombre($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -152,9 +146,7 @@ abstract class BaseUsuario extends BaseObject  implements Persistent {
 	public function setUsuApellidos($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -168,9 +160,7 @@ abstract class BaseUsuario extends BaseObject  implements Persistent {
 	public function setUsuEstado($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -184,9 +174,7 @@ abstract class BaseUsuario extends BaseObject  implements Persistent {
 	public function setUsuRol($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 

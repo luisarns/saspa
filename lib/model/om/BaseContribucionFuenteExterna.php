@@ -67,9 +67,7 @@ abstract class BaseContribucionFuenteExterna extends BaseObject  implements Pers
 	public function setCfePinId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -87,9 +85,7 @@ abstract class BaseContribucionFuenteExterna extends BaseObject  implements Pers
 	public function setCfeFueId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -107,9 +103,7 @@ abstract class BaseContribucionFuenteExterna extends BaseObject  implements Pers
 	public function setCfePeriodo($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 

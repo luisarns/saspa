@@ -70,9 +70,7 @@ abstract class BaseConceptoGastos extends BaseObject  implements Persistent {
 	public function setCogId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -86,9 +84,7 @@ abstract class BaseConceptoGastos extends BaseObject  implements Persistent {
 	public function setCogSolId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -106,9 +102,7 @@ abstract class BaseConceptoGastos extends BaseObject  implements Persistent {
 	public function setCogConcepto($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -122,9 +116,7 @@ abstract class BaseConceptoGastos extends BaseObject  implements Persistent {
 	public function setCogTipo($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 

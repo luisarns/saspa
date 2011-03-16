@@ -239,9 +239,7 @@ abstract class BaseInformacionGeneral extends BaseObject  implements Persistent 
 	public function setIngId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -255,9 +253,7 @@ abstract class BaseInformacionGeneral extends BaseObject  implements Persistent 
 	public function setIngSolId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -292,9 +288,7 @@ abstract class BaseInformacionGeneral extends BaseObject  implements Persistent 
 	public function setIngSolicitante($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -308,9 +302,7 @@ abstract class BaseInformacionGeneral extends BaseObject  implements Persistent 
 	public function setIngFacultad($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -324,9 +316,7 @@ abstract class BaseInformacionGeneral extends BaseObject  implements Persistent 
 	public function setIngEscuela($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -340,9 +330,7 @@ abstract class BaseInformacionGeneral extends BaseObject  implements Persistent 
 	public function setIngNombrePrograma($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -356,9 +344,7 @@ abstract class BaseInformacionGeneral extends BaseObject  implements Persistent 
 	public function setIngTituloOtorga($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -372,9 +358,7 @@ abstract class BaseInformacionGeneral extends BaseObject  implements Persistent 
 	public function setIngMotivoSolicitud($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -388,9 +372,7 @@ abstract class BaseInformacionGeneral extends BaseObject  implements Persistent 
 	public function setIngCualMotivo($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -404,9 +386,7 @@ abstract class BaseInformacionGeneral extends BaseObject  implements Persistent 
 	public function setIngCiudadSede($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -420,9 +400,7 @@ abstract class BaseInformacionGeneral extends BaseObject  implements Persistent 
 	public function setIngNivelAcademico($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -436,9 +414,7 @@ abstract class BaseInformacionGeneral extends BaseObject  implements Persistent 
 	public function setIngDuracionPrograma($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -452,9 +428,7 @@ abstract class BaseInformacionGeneral extends BaseObject  implements Persistent 
 	public function setIngJornada($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -468,9 +442,7 @@ abstract class BaseInformacionGeneral extends BaseObject  implements Persistent 
 	public function setIngTipoModalidad($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -484,9 +456,7 @@ abstract class BaseInformacionGeneral extends BaseObject  implements Persistent 
 	public function setIngTipoValor($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -500,9 +470,7 @@ abstract class BaseInformacionGeneral extends BaseObject  implements Persistent 
 	public function setIngFormaPago($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 

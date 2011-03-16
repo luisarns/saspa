@@ -53,9 +53,7 @@ abstract class BaseGastosGenerales extends BaseObject  implements Persistent {
 	public function setIggCogId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -73,9 +71,7 @@ abstract class BaseGastosGenerales extends BaseObject  implements Persistent {
 	public function setIggPeriodo($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 

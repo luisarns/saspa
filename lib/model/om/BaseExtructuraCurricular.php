@@ -130,9 +130,7 @@ abstract class BaseExtructuraCurricular extends BaseObject  implements Persisten
 	public function setEcuId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -146,9 +144,7 @@ abstract class BaseExtructuraCurricular extends BaseObject  implements Persisten
 	public function setEcuSolId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -166,9 +162,7 @@ abstract class BaseExtructuraCurricular extends BaseObject  implements Persisten
 	public function setEcuPeriodoAcademico($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -182,9 +176,7 @@ abstract class BaseExtructuraCurricular extends BaseObject  implements Persisten
 	public function setEcuAsignatura($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -198,9 +190,7 @@ abstract class BaseExtructuraCurricular extends BaseObject  implements Persisten
 	public function setEcuNumCreditos($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -214,9 +204,7 @@ abstract class BaseExtructuraCurricular extends BaseObject  implements Persisten
 	public function setEcuTotalHoras($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -230,9 +218,7 @@ abstract class BaseExtructuraCurricular extends BaseObject  implements Persisten
 	public function setEcuNumProgramaComparte($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -246,9 +232,7 @@ abstract class BaseExtructuraCurricular extends BaseObject  implements Persisten
 	public function setEcuCategoriaDocente($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -262,9 +246,7 @@ abstract class BaseExtructuraCurricular extends BaseObject  implements Persisten
 	public function setEcuHorasDictadasComo($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 

@@ -197,9 +197,7 @@ abstract class BaseSolicitud extends BaseObject  implements Persistent {
 	public function setSolId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -213,9 +211,7 @@ abstract class BaseSolicitud extends BaseObject  implements Persistent {
 	public function setSolNombre($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -229,9 +225,7 @@ abstract class BaseSolicitud extends BaseObject  implements Persistent {
 	public function setSolEscuela($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -245,9 +239,7 @@ abstract class BaseSolicitud extends BaseObject  implements Persistent {
 	public function setSolFacultad($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -261,9 +253,7 @@ abstract class BaseSolicitud extends BaseObject  implements Persistent {
 	public function setSolArchivo($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -277,9 +267,7 @@ abstract class BaseSolicitud extends BaseObject  implements Persistent {
 	public function setSolEstado($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -293,9 +281,7 @@ abstract class BaseSolicitud extends BaseObject  implements Persistent {
 	public function setSolUsuario($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
