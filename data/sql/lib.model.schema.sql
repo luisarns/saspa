@@ -493,3 +493,27 @@ COMMENT ON TABLE "decersion" IS '';
 
 SET search_path TO public;
 ALTER TABLE "decersion" ADD CONSTRAINT "decersion_FK_1" FOREIGN KEY ("dec_facultad") REFERENCES "facultad" ("fac_id") ON DELETE CASCADE;
+
+-----------------------------------------------------------------------------
+-- sede
+-----------------------------------------------------------------------------
+
+DROP TABLE "sede" CASCADE;
+
+DROP SEQUENCE "sede_seq";
+
+CREATE SEQUENCE "sede_seq";
+
+
+CREATE TABLE "sede"
+(
+	"sed_codigo" INTEGER  NOT NULL,
+	"sed_tipo" VARCHAR(40),
+	"sed_nombre" VARCHAR(80),
+	PRIMARY KEY ("sed_codigo")
+);
+
+COMMENT ON TABLE "sede" IS '';
+
+
+SET search_path TO public;

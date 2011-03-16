@@ -97,6 +97,27 @@ class parametrosActions extends sfActions
 		return $this->renderText(json_encode($datos));
   }
   
+  /*
+  * Lista las sedes
+  * @return string json
+  */
+  public function executeListarSedes()
+  {
+  		$c = new Criteria();
+		$sedes = SedePeer::doSelect($c);
+		
+		$datos = array();
+		$cont = 0;
+		foreach($sedes as $sede)
+		{
+			$datos[$cont]['sed_codigo'] = $sede->getSedCodigo();
+			$datos[$cont]['sed_nombre'] = $sede->getSedNombre();
+			$cont++;
+		}
+  		
+		return $this->renderText(json_encode($datos));
+  }
+
   
   /*
   * Lista las dependencias

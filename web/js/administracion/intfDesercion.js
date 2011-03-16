@@ -20,6 +20,10 @@ Saspa.parametros.desercion = {
 			fields   : ['fac_id','fac_nombre']
 		});
 		
+		var strSede = new Ext.data.JsonStore({
+			url  : URL_SASPA+'administracion.php/parametros/listarSedes',
+			fields   : ['sed_codigo','sed_nombre']
+		});
 
 		var decTbar  =	
 		[
@@ -78,12 +82,26 @@ Saspa.parametros.desercion = {
 			defaults: { width : 180 },
 			defaultType: 'textfield',
 		      	items :	
-			[
+			[	
 				{
+					xtype          : 'combo',
+					id             : 'id_sede',
+					store          : strSede,
+					displayField   : 'sed_nombre',
+					emptyText      : 'Selecione una sede...',
+              				forceSelection : true,
+					triggerAction  : 'all',
+					typeAhead      : true,
+					allowBlank     : false,
+					fieldLabel     : 'Sede',
+					name           : 'sede',
+					allowBlank     : false
+				},
+				/*{
 					fieldLabel : 'Sede',
 					name : 'sede',
 					allowBlank : false
-				},
+				},*/
 				{
 					xtype          : 'combo',
 					id             : 'id_facultad',

@@ -1,10 +1,10 @@
 propel:
   rol:
     _attributes:       { phpName: Rol, idMethod: none }
-    rol_identificador: { type: varchar(10), primaryKey: true }
-    rol_nombre:        { type: varchar(50) }
-    rol_url_menu:      { type: longvarchar }
-    rol_url_inicio:    { type: longvarchar }
+    rol_identificador: { type : varchar(10), primaryKey: true }
+    rol_nombre:        { type : varchar(50) }
+    rol_url_menu:      { type : longvarchar }
+    rol_url_inicio:    { type : longvarchar }
 
   usuario:
     _attributes:       { phpName: Usuario, idMethod: none }
@@ -164,3 +164,9 @@ propel:
     dec_facultad:     { type : integer,  foreignTable : facultad,    foreignReference : fac_id,     onDelete : cascade }
     dec_tipo_progama:  { type : varchar(40) }
     dec_periodo:      { type : integer }
+
+  sede:
+    _attributes: { phpName: Sede , idMethod: native }
+    sed_codigo:  { type : integer, autoIncrement: true, primaryKey: true }
+    sed_tipo:    { type : varchar(40) }
+    sed_nombre:  { type : varchar(80) }
