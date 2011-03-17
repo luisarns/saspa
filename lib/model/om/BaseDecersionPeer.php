@@ -13,7 +13,7 @@ abstract class BaseDecersionPeer {
 	const CLASS_DEFAULT = 'lib.model.Decersion';
 
 	
-	const NUM_COLUMNS = 5;
+	const NUM_COLUMNS = 6;
 
 	
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -29,10 +29,13 @@ abstract class BaseDecersionPeer {
 	const DEC_FACULTAD = 'decersion.DEC_FACULTAD';
 
 	
-	const DEC_TIPO_PROGAMA = 'decersion.DEC_TIPO_PROGAMA';
+	const DEC_TIPO_PROGRAMA = 'decersion.DEC_TIPO_PROGRAMA';
 
 	
 	const DEC_PERIODO = 'decersion.DEC_PERIODO';
+
+	
+	const DEC_VALOR = 'decersion.DEC_VALOR';
 
 	
 	private static $phpNameMap = null;
@@ -40,18 +43,18 @@ abstract class BaseDecersionPeer {
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('DecId', 'DecSede', 'DecFacultad', 'DecTipoProgama', 'DecPeriodo', ),
-		BasePeer::TYPE_COLNAME => array (DecersionPeer::DEC_ID, DecersionPeer::DEC_SEDE, DecersionPeer::DEC_FACULTAD, DecersionPeer::DEC_TIPO_PROGAMA, DecersionPeer::DEC_PERIODO, ),
-		BasePeer::TYPE_FIELDNAME => array ('dec_id', 'dec_sede', 'dec_facultad', 'dec_tipo_progama', 'dec_periodo', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+		BasePeer::TYPE_PHPNAME => array ('DecId', 'DecSede', 'DecFacultad', 'DecTipoPrograma', 'DecPeriodo', 'DecValor', ),
+		BasePeer::TYPE_COLNAME => array (DecersionPeer::DEC_ID, DecersionPeer::DEC_SEDE, DecersionPeer::DEC_FACULTAD, DecersionPeer::DEC_TIPO_PROGRAMA, DecersionPeer::DEC_PERIODO, DecersionPeer::DEC_VALOR, ),
+		BasePeer::TYPE_FIELDNAME => array ('dec_id', 'dec_sede', 'dec_facultad', 'dec_tipo_programa', 'dec_periodo', 'dec_valor', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('DecId' => 0, 'DecSede' => 1, 'DecFacultad' => 2, 'DecTipoProgama' => 3, 'DecPeriodo' => 4, ),
-		BasePeer::TYPE_COLNAME => array (DecersionPeer::DEC_ID => 0, DecersionPeer::DEC_SEDE => 1, DecersionPeer::DEC_FACULTAD => 2, DecersionPeer::DEC_TIPO_PROGAMA => 3, DecersionPeer::DEC_PERIODO => 4, ),
-		BasePeer::TYPE_FIELDNAME => array ('dec_id' => 0, 'dec_sede' => 1, 'dec_facultad' => 2, 'dec_tipo_progama' => 3, 'dec_periodo' => 4, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+		BasePeer::TYPE_PHPNAME => array ('DecId' => 0, 'DecSede' => 1, 'DecFacultad' => 2, 'DecTipoPrograma' => 3, 'DecPeriodo' => 4, 'DecValor' => 5, ),
+		BasePeer::TYPE_COLNAME => array (DecersionPeer::DEC_ID => 0, DecersionPeer::DEC_SEDE => 1, DecersionPeer::DEC_FACULTAD => 2, DecersionPeer::DEC_TIPO_PROGRAMA => 3, DecersionPeer::DEC_PERIODO => 4, DecersionPeer::DEC_VALOR => 5, ),
+		BasePeer::TYPE_FIELDNAME => array ('dec_id' => 0, 'dec_sede' => 1, 'dec_facultad' => 2, 'dec_tipo_programa' => 3, 'dec_periodo' => 4, 'dec_valor' => 5, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
 	);
 
 	
@@ -111,9 +114,11 @@ abstract class BaseDecersionPeer {
 
 		$criteria->addSelectColumn(DecersionPeer::DEC_FACULTAD);
 
-		$criteria->addSelectColumn(DecersionPeer::DEC_TIPO_PROGAMA);
+		$criteria->addSelectColumn(DecersionPeer::DEC_TIPO_PROGRAMA);
 
 		$criteria->addSelectColumn(DecersionPeer::DEC_PERIODO);
+
+		$criteria->addSelectColumn(DecersionPeer::DEC_VALOR);
 
 	}
 
@@ -194,6 +199,34 @@ abstract class BaseDecersionPeer {
 	}
 
 	
+	public static function doCountJoinSede(Criteria $criteria, $distinct = false, $con = null)
+	{
+				$criteria = clone $criteria;
+
+				$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(DecersionPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(DecersionPeer::COUNT);
+		}
+
+				foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(DecersionPeer::DEC_SEDE, SedePeer::SED_CODIGO);
+
+		$rs = DecersionPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+						return 0;
+		}
+	}
+
+
+	
 	public static function doCountJoinFacultad(Criteria $criteria, $distinct = false, $con = null)
 	{
 				$criteria = clone $criteria;
@@ -218,6 +251,53 @@ abstract class BaseDecersionPeer {
 		} else {
 						return 0;
 		}
+	}
+
+
+	
+	public static function doSelectJoinSede(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+				if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		DecersionPeer::addSelectColumns($c);
+		$startcol = (DecersionPeer::NUM_COLUMNS - DecersionPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+		SedePeer::addSelectColumns($c);
+
+		$c->addJoin(DecersionPeer::DEC_SEDE, SedePeer::SED_CODIGO);
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = DecersionPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = SedePeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj2 = new $cls();
+			$obj2->hydrate($rs, $startcol);
+
+			$newObject = true;
+			foreach($results as $temp_obj1) {
+				$temp_obj2 = $temp_obj1->getSede(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+										$temp_obj2->addDecersion($obj1); 					break;
+				}
+			}
+			if ($newObject) {
+				$obj2->initDecersions();
+				$obj2->addDecersion($obj1); 			}
+			$results[] = $obj1;
+		}
+		return $results;
 	}
 
 
@@ -285,6 +365,8 @@ abstract class BaseDecersionPeer {
 			$criteria->addSelectColumn($column);
 		}
 
+		$criteria->addJoin(DecersionPeer::DEC_SEDE, SedePeer::SED_CODIGO);
+
 		$criteria->addJoin(DecersionPeer::DEC_FACULTAD, FacultadPeer::FAC_ID);
 
 		$rs = DecersionPeer::doSelectRS($criteria, $con);
@@ -308,8 +390,13 @@ abstract class BaseDecersionPeer {
 		DecersionPeer::addSelectColumns($c);
 		$startcol2 = (DecersionPeer::NUM_COLUMNS - DecersionPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
 
+		SedePeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + SedePeer::NUM_COLUMNS;
+
 		FacultadPeer::addSelectColumns($c);
-		$startcol3 = $startcol2 + FacultadPeer::NUM_COLUMNS;
+		$startcol4 = $startcol3 + FacultadPeer::NUM_COLUMNS;
+
+		$c->addJoin(DecersionPeer::DEC_SEDE, SedePeer::SED_CODIGO);
 
 		$c->addJoin(DecersionPeer::DEC_FACULTAD, FacultadPeer::FAC_ID);
 
@@ -327,7 +414,7 @@ abstract class BaseDecersionPeer {
 
 
 					
-			$omClass = FacultadPeer::getOMClass();
+			$omClass = SedePeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -337,9 +424,202 @@ abstract class BaseDecersionPeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj2 = $temp_obj1->getFacultad(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+				$temp_obj2 = $temp_obj1->getSede(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj2->addDecersion($obj1); 					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj2->initDecersions();
+				$obj2->addDecersion($obj1);
+			}
+
+
+					
+			$omClass = FacultadPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj3 = new $cls();
+			$obj3->hydrate($rs, $startcol3);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj3 = $temp_obj1->getFacultad(); 				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj3->addDecersion($obj1); 					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj3->initDecersions();
+				$obj3->addDecersion($obj1);
+			}
+
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	
+	public static function doCountJoinAllExceptSede(Criteria $criteria, $distinct = false, $con = null)
+	{
+				$criteria = clone $criteria;
+
+				$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(DecersionPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(DecersionPeer::COUNT);
+		}
+
+				foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(DecersionPeer::DEC_FACULTAD, FacultadPeer::FAC_ID);
+
+		$rs = DecersionPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+						return 0;
+		}
+	}
+
+
+	
+	public static function doCountJoinAllExceptFacultad(Criteria $criteria, $distinct = false, $con = null)
+	{
+				$criteria = clone $criteria;
+
+				$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(DecersionPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(DecersionPeer::COUNT);
+		}
+
+				foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(DecersionPeer::DEC_SEDE, SedePeer::SED_CODIGO);
+
+		$rs = DecersionPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+						return 0;
+		}
+	}
+
+
+	
+	public static function doSelectJoinAllExceptSede(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+								if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		DecersionPeer::addSelectColumns($c);
+		$startcol2 = (DecersionPeer::NUM_COLUMNS - DecersionPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+
+		FacultadPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + FacultadPeer::NUM_COLUMNS;
+
+		$c->addJoin(DecersionPeer::DEC_FACULTAD, FacultadPeer::FAC_ID);
+
+
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = DecersionPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = FacultadPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj2  = new $cls();
+			$obj2->hydrate($rs, $startcol2);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj2 = $temp_obj1->getFacultad(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj2->addDecersion($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj2->initDecersions();
+				$obj2->addDecersion($obj1);
+			}
+
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	
+	public static function doSelectJoinAllExceptFacultad(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+								if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		DecersionPeer::addSelectColumns($c);
+		$startcol2 = (DecersionPeer::NUM_COLUMNS - DecersionPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+
+		SedePeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + SedePeer::NUM_COLUMNS;
+
+		$c->addJoin(DecersionPeer::DEC_SEDE, SedePeer::SED_CODIGO);
+
+
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = DecersionPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = SedePeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj2  = new $cls();
+			$obj2->hydrate($rs, $startcol2);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj2 = $temp_obj1->getSede(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj2->addDecersion($obj1);
+					break;
 				}
 			}
 

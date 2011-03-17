@@ -513,4 +513,39 @@ abstract class BaseFacultad extends BaseObject  implements Persistent {
 		$l->setFacultad($this);
 	}
 
+
+	
+	public function getDecersionsJoinSede($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseDecersionPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collDecersions === null) {
+			if ($this->isNew()) {
+				$this->collDecersions = array();
+			} else {
+
+				$criteria->add(DecersionPeer::DEC_FACULTAD, $this->getFacId());
+
+				$this->collDecersions = DecersionPeer::doSelectJoinSede($criteria, $con);
+			}
+		} else {
+									
+			$criteria->add(DecersionPeer::DEC_FACULTAD, $this->getFacId());
+
+			if (!isset($this->lastDecersionCriteria) || !$this->lastDecersionCriteria->equals($criteria)) {
+				$this->collDecersions = DecersionPeer::doSelectJoinSede($criteria, $con);
+			}
+		}
+		$this->lastDecersionCriteria = $criteria;
+
+		return $this->collDecersions;
+	}
+
 } 

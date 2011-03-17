@@ -158,12 +158,13 @@ propel:
     categoria:   { type : varchar(40) }
 
   decersion:
-    _attributes:      { phpName: Decersion , idMethod: native }
-    dec_id:           { type: integer, autoIncrement: true, primaryKey: true }
-    dec_sede:         { type : varchar(80) }
-    dec_facultad:     { type : integer,  foreignTable : facultad,    foreignReference : fac_id,     onDelete : cascade }
-    dec_tipo_progama:  { type : varchar(40) }
-    dec_periodo:      { type : integer }
+    _attributes:        { phpName: Decersion , idMethod: native }
+    dec_id:             { type: integer, autoIncrement: true, primaryKey: true }
+    dec_sede:           { type : integer,  foreignTable : sede, foreignReference : sed_codigo, onDelete : cascade }
+    dec_facultad:       { type : integer,  foreignTable : facultad,    foreignReference : fac_id, onDelete : cascade }
+    dec_tipo_programa:  { type : varchar(40) }
+    dec_periodo:        { type : integer }
+    dec_valor:          { type : float }
 
   sede:
     _attributes: { phpName: Sede , idMethod: native }

@@ -36,13 +36,15 @@ class DecersionMapBuilder {
 
 		$tMap->addPrimaryKey('DEC_ID', 'DecId', 'int', CreoleTypes::INTEGER, true, null);
 
-		$tMap->addColumn('DEC_SEDE', 'DecSede', 'string', CreoleTypes::VARCHAR, false, 80);
+		$tMap->addForeignKey('DEC_SEDE', 'DecSede', 'int', CreoleTypes::INTEGER, 'sede', 'SED_CODIGO', false, null);
 
 		$tMap->addForeignKey('DEC_FACULTAD', 'DecFacultad', 'int', CreoleTypes::INTEGER, 'facultad', 'FAC_ID', false, null);
 
-		$tMap->addColumn('DEC_TIPO_PROGAMA', 'DecTipoProgama', 'string', CreoleTypes::VARCHAR, false, 40);
+		$tMap->addColumn('DEC_TIPO_PROGRAMA', 'DecTipoPrograma', 'string', CreoleTypes::VARCHAR, false, 40);
 
 		$tMap->addColumn('DEC_PERIODO', 'DecPeriodo', 'int', CreoleTypes::INTEGER, false, null);
+
+		$tMap->addColumn('DEC_VALOR', 'DecValor', 'double', CreoleTypes::FLOAT, false, null);
 
 	} 
 } 

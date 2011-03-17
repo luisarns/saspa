@@ -20,6 +20,12 @@ abstract class BaseSede extends BaseObject  implements Persistent {
 	protected $sed_nombre;
 
 	
+	protected $collDecersions;
+
+	
+	protected $lastDecersionCriteria = null;
+
+	
 	protected $alreadyInSave = false;
 
 	
@@ -171,6 +177,14 @@ abstract class BaseSede extends BaseObject  implements Persistent {
 				}
 				$this->resetModified(); 			}
 
+			if ($this->collDecersions !== null) {
+				foreach($this->collDecersions as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			$this->alreadyInSave = false;
 		}
 		return $affectedRows;
@@ -211,6 +225,14 @@ abstract class BaseSede extends BaseObject  implements Persistent {
 				$failureMap = array_merge($failureMap, $retval);
 			}
 
+
+				if ($this->collDecersions !== null) {
+					foreach($this->collDecersions as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
 
 
 			$this->alreadyInValidation = false;
@@ -331,6 +353,15 @@ abstract class BaseSede extends BaseObject  implements Persistent {
 		$copyObj->setSedNombre($this->sed_nombre);
 
 
+		if ($deepCopy) {
+									$copyObj->setNew(false);
+
+			foreach($this->getDecersions() as $relObj) {
+				$copyObj->addDecersion($relObj->copy($deepCopy));
+			}
+
+		} 
+
 		$copyObj->setNew(true);
 
 		$copyObj->setSedCodigo(NULL); 
@@ -352,6 +383,111 @@ abstract class BaseSede extends BaseObject  implements Persistent {
 			self::$peer = new SedePeer();
 		}
 		return self::$peer;
+	}
+
+	
+	public function initDecersions()
+	{
+		if ($this->collDecersions === null) {
+			$this->collDecersions = array();
+		}
+	}
+
+	
+	public function getDecersions($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseDecersionPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collDecersions === null) {
+			if ($this->isNew()) {
+			   $this->collDecersions = array();
+			} else {
+
+				$criteria->add(DecersionPeer::DEC_SEDE, $this->getSedCodigo());
+
+				DecersionPeer::addSelectColumns($criteria);
+				$this->collDecersions = DecersionPeer::doSelect($criteria, $con);
+			}
+		} else {
+						if (!$this->isNew()) {
+												
+
+				$criteria->add(DecersionPeer::DEC_SEDE, $this->getSedCodigo());
+
+				DecersionPeer::addSelectColumns($criteria);
+				if (!isset($this->lastDecersionCriteria) || !$this->lastDecersionCriteria->equals($criteria)) {
+					$this->collDecersions = DecersionPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastDecersionCriteria = $criteria;
+		return $this->collDecersions;
+	}
+
+	
+	public function countDecersions($criteria = null, $distinct = false, $con = null)
+	{
+				include_once 'lib/model/om/BaseDecersionPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(DecersionPeer::DEC_SEDE, $this->getSedCodigo());
+
+		return DecersionPeer::doCount($criteria, $distinct, $con);
+	}
+
+	
+	public function addDecersion(Decersion $l)
+	{
+		$this->collDecersions[] = $l;
+		$l->setSede($this);
+	}
+
+
+	
+	public function getDecersionsJoinFacultad($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseDecersionPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collDecersions === null) {
+			if ($this->isNew()) {
+				$this->collDecersions = array();
+			} else {
+
+				$criteria->add(DecersionPeer::DEC_SEDE, $this->getSedCodigo());
+
+				$this->collDecersions = DecersionPeer::doSelectJoinFacultad($criteria, $con);
+			}
+		} else {
+									
+			$criteria->add(DecersionPeer::DEC_SEDE, $this->getSedCodigo());
+
+			if (!isset($this->lastDecersionCriteria) || !$this->lastDecersionCriteria->equals($criteria)) {
+				$this->collDecersions = DecersionPeer::doSelectJoinFacultad($criteria, $con);
+			}
+		}
+		$this->lastDecersionCriteria = $criteria;
+
+		return $this->collDecersions;
 	}
 
 } 

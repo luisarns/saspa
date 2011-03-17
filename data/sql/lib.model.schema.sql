@@ -481,10 +481,11 @@ CREATE SEQUENCE "decersion_seq";
 CREATE TABLE "decersion"
 (
 	"dec_id" INTEGER  NOT NULL,
-	"dec_sede" VARCHAR(80),
+	"dec_sede" INTEGER,
 	"dec_facultad" INTEGER,
-	"dec_tipo_progama" VARCHAR(40),
+	"dec_tipo_programa" VARCHAR(40),
 	"dec_periodo" INTEGER,
+	"dec_valor" FLOAT,
 	PRIMARY KEY ("dec_id")
 );
 
@@ -492,7 +493,9 @@ COMMENT ON TABLE "decersion" IS '';
 
 
 SET search_path TO public;
-ALTER TABLE "decersion" ADD CONSTRAINT "decersion_FK_1" FOREIGN KEY ("dec_facultad") REFERENCES "facultad" ("fac_id") ON DELETE CASCADE;
+ALTER TABLE "decersion" ADD CONSTRAINT "decersion_FK_1" FOREIGN KEY ("dec_sede") REFERENCES "sede" ("sed_codigo") ON DELETE CASCADE;
+
+ALTER TABLE "decersion" ADD CONSTRAINT "decersion_FK_2" FOREIGN KEY ("dec_facultad") REFERENCES "facultad" ("fac_id") ON DELETE CASCADE;
 
 -----------------------------------------------------------------------------
 -- sede

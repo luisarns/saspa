@@ -21,11 +21,18 @@ abstract class BaseDecersion extends BaseObject  implements Persistent {
 
 
 	
-	protected $dec_tipo_progama;
+	protected $dec_tipo_programa;
 
 
 	
 	protected $dec_periodo;
+
+
+	
+	protected $dec_valor;
+
+	
+	protected $aSede;
 
 	
 	protected $aFacultad;
@@ -58,10 +65,10 @@ abstract class BaseDecersion extends BaseObject  implements Persistent {
 	}
 
 	
-	public function getDecTipoProgama()
+	public function getDecTipoPrograma()
 	{
 
-		return $this->dec_tipo_progama;
+		return $this->dec_tipo_programa;
 	}
 
 	
@@ -69,6 +76,13 @@ abstract class BaseDecersion extends BaseObject  implements Persistent {
 	{
 
 		return $this->dec_periodo;
+	}
+
+	
+	public function getDecValor()
+	{
+
+		return $this->dec_valor;
 	}
 
 	
@@ -89,13 +103,17 @@ abstract class BaseDecersion extends BaseObject  implements Persistent {
 	public function setDecSede($v)
 	{
 
-						if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
+			$v = (int) $v;
 		}
 
 		if ($this->dec_sede !== $v) {
 			$this->dec_sede = $v;
 			$this->modifiedColumns[] = DecersionPeer::DEC_SEDE;
+		}
+
+		if ($this->aSede !== null && $this->aSede->getSedCodigo() !== $v) {
+			$this->aSede = null;
 		}
 
 	} 
@@ -118,16 +136,16 @@ abstract class BaseDecersion extends BaseObject  implements Persistent {
 
 	} 
 	
-	public function setDecTipoProgama($v)
+	public function setDecTipoPrograma($v)
 	{
 
 						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
-		if ($this->dec_tipo_progama !== $v) {
-			$this->dec_tipo_progama = $v;
-			$this->modifiedColumns[] = DecersionPeer::DEC_TIPO_PROGAMA;
+		if ($this->dec_tipo_programa !== $v) {
+			$this->dec_tipo_programa = $v;
+			$this->modifiedColumns[] = DecersionPeer::DEC_TIPO_PROGRAMA;
 		}
 
 	} 
@@ -146,25 +164,37 @@ abstract class BaseDecersion extends BaseObject  implements Persistent {
 
 	} 
 	
+	public function setDecValor($v)
+	{
+
+		if ($this->dec_valor !== $v) {
+			$this->dec_valor = $v;
+			$this->modifiedColumns[] = DecersionPeer::DEC_VALOR;
+		}
+
+	} 
+	
 	public function hydrate(ResultSet $rs, $startcol = 1)
 	{
 		try {
 
 			$this->dec_id = $rs->getInt($startcol + 0);
 
-			$this->dec_sede = $rs->getString($startcol + 1);
+			$this->dec_sede = $rs->getInt($startcol + 1);
 
 			$this->dec_facultad = $rs->getInt($startcol + 2);
 
-			$this->dec_tipo_progama = $rs->getString($startcol + 3);
+			$this->dec_tipo_programa = $rs->getString($startcol + 3);
 
 			$this->dec_periodo = $rs->getInt($startcol + 4);
+
+			$this->dec_valor = $rs->getFloat($startcol + 5);
 
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 5; 
+						return $startcol + 6; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Decersion object", $e);
 		}
@@ -222,6 +252,13 @@ abstract class BaseDecersion extends BaseObject  implements Persistent {
 
 
 												
+			if ($this->aSede !== null) {
+				if ($this->aSede->isModified()) {
+					$affectedRows += $this->aSede->save($con);
+				}
+				$this->setSede($this->aSede);
+			}
+
 			if ($this->aFacultad !== null) {
 				if ($this->aFacultad->isModified()) {
 					$affectedRows += $this->aFacultad->save($con);
@@ -278,6 +315,12 @@ abstract class BaseDecersion extends BaseObject  implements Persistent {
 
 
 												
+			if ($this->aSede !== null) {
+				if (!$this->aSede->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aSede->getValidationFailures());
+				}
+			}
+
 			if ($this->aFacultad !== null) {
 				if (!$this->aFacultad->validate($columns)) {
 					$failureMap = array_merge($failureMap, $this->aFacultad->getValidationFailures());
@@ -318,10 +361,13 @@ abstract class BaseDecersion extends BaseObject  implements Persistent {
 				return $this->getDecFacultad();
 				break;
 			case 3:
-				return $this->getDecTipoProgama();
+				return $this->getDecTipoPrograma();
 				break;
 			case 4:
 				return $this->getDecPeriodo();
+				break;
+			case 5:
+				return $this->getDecValor();
 				break;
 			default:
 				return null;
@@ -336,8 +382,9 @@ abstract class BaseDecersion extends BaseObject  implements Persistent {
 			$keys[0] => $this->getDecId(),
 			$keys[1] => $this->getDecSede(),
 			$keys[2] => $this->getDecFacultad(),
-			$keys[3] => $this->getDecTipoProgama(),
+			$keys[3] => $this->getDecTipoPrograma(),
 			$keys[4] => $this->getDecPeriodo(),
+			$keys[5] => $this->getDecValor(),
 		);
 		return $result;
 	}
@@ -363,10 +410,13 @@ abstract class BaseDecersion extends BaseObject  implements Persistent {
 				$this->setDecFacultad($value);
 				break;
 			case 3:
-				$this->setDecTipoProgama($value);
+				$this->setDecTipoPrograma($value);
 				break;
 			case 4:
 				$this->setDecPeriodo($value);
+				break;
+			case 5:
+				$this->setDecValor($value);
 				break;
 		} 	}
 
@@ -378,8 +428,9 @@ abstract class BaseDecersion extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[0], $arr)) $this->setDecId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setDecSede($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setDecFacultad($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setDecTipoProgama($arr[$keys[3]]);
+		if (array_key_exists($keys[3], $arr)) $this->setDecTipoPrograma($arr[$keys[3]]);
 		if (array_key_exists($keys[4], $arr)) $this->setDecPeriodo($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setDecValor($arr[$keys[5]]);
 	}
 
 	
@@ -390,8 +441,9 @@ abstract class BaseDecersion extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(DecersionPeer::DEC_ID)) $criteria->add(DecersionPeer::DEC_ID, $this->dec_id);
 		if ($this->isColumnModified(DecersionPeer::DEC_SEDE)) $criteria->add(DecersionPeer::DEC_SEDE, $this->dec_sede);
 		if ($this->isColumnModified(DecersionPeer::DEC_FACULTAD)) $criteria->add(DecersionPeer::DEC_FACULTAD, $this->dec_facultad);
-		if ($this->isColumnModified(DecersionPeer::DEC_TIPO_PROGAMA)) $criteria->add(DecersionPeer::DEC_TIPO_PROGAMA, $this->dec_tipo_progama);
+		if ($this->isColumnModified(DecersionPeer::DEC_TIPO_PROGRAMA)) $criteria->add(DecersionPeer::DEC_TIPO_PROGRAMA, $this->dec_tipo_programa);
 		if ($this->isColumnModified(DecersionPeer::DEC_PERIODO)) $criteria->add(DecersionPeer::DEC_PERIODO, $this->dec_periodo);
+		if ($this->isColumnModified(DecersionPeer::DEC_VALOR)) $criteria->add(DecersionPeer::DEC_VALOR, $this->dec_valor);
 
 		return $criteria;
 	}
@@ -426,9 +478,11 @@ abstract class BaseDecersion extends BaseObject  implements Persistent {
 
 		$copyObj->setDecFacultad($this->dec_facultad);
 
-		$copyObj->setDecTipoProgama($this->dec_tipo_progama);
+		$copyObj->setDecTipoPrograma($this->dec_tipo_programa);
 
 		$copyObj->setDecPeriodo($this->dec_periodo);
+
+		$copyObj->setDecValor($this->dec_valor);
 
 
 		$copyObj->setNew(true);
@@ -452,6 +506,35 @@ abstract class BaseDecersion extends BaseObject  implements Persistent {
 			self::$peer = new DecersionPeer();
 		}
 		return self::$peer;
+	}
+
+	
+	public function setSede($v)
+	{
+
+
+		if ($v === null) {
+			$this->setDecSede(NULL);
+		} else {
+			$this->setDecSede($v->getSedCodigo());
+		}
+
+
+		$this->aSede = $v;
+	}
+
+
+	
+	public function getSede($con = null)
+	{
+		if ($this->aSede === null && ($this->dec_sede !== null)) {
+						include_once 'lib/model/om/BaseSedePeer.php';
+
+			$this->aSede = SedePeer::retrieveByPK($this->dec_sede, $con);
+
+			
+		}
+		return $this->aSede;
 	}
 
 	

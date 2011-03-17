@@ -11,7 +11,8 @@ Saspa.parametros.desercion = {
 				{name : 'sede'},
 				{name : 'facultad'},
 				{name : 'tipoPrograma'},
-				{name : 'periodo', type : 'int'}
+				{name : 'periodo', type : 'int'},
+				{name : 'valor',   type : 'float'},
 			]
 		});
 		
@@ -48,7 +49,8 @@ Saspa.parametros.desercion = {
 			{ header : "Periodo",       width : 60,  sortable : true, dataIndex : 'periodo' },
 			{ header : "Sede",          width : 80,  sortable : true, dataIndex : 'sede' },
 			{ header : "Facultad",      width : 80,  sortable : true, dataIndex : 'facultad' },
-			{ header : "Tipo Programa", width : 100, sortable : true, dataIndex : 'tipo_programa' }
+			{ header : "Tipo Programa", width : 100, sortable : true, dataIndex : 'tipo_programa' },
+			{ header : "Valor(%)", width : 100, sortable : true, dataIndex : 'valor' }
 		]);
 		
 		var decSm = new Ext.grid.RowSelectionModel({
@@ -61,6 +63,7 @@ Saspa.parametros.desercion = {
 		});
 
 		var decGrid = new Ext.grid.GridPanel({
+			id         : 'gridDecersion',
 			store      : decStore,
 			colModel   : decColModel,
 			sm         : decSm,
@@ -73,6 +76,8 @@ Saspa.parametros.desercion = {
 		
 		var decForm = new Ext.form.FormPanel(
 		{
+			id  : 'formDecersion',
+			url : URL_SASPA+'administracion_dev.php/parametros/desercion',
 			labelWidth: 75,
 			title : 'Formulario Decersion',
 			frame : true,
@@ -85,30 +90,25 @@ Saspa.parametros.desercion = {
 			[	
 				{
 					xtype          : 'combo',
-					id             : 'id_sede',
-					store          : strSede,
+					name           : 'sede',
 					displayField   : 'sed_nombre',
+					valueField     : 'sed_codigo',
+					fieldLabel     : 'Sede',
+					store          : strSede,
 					emptyText      : 'Selecione una sede...',
               				forceSelection : true,
 					triggerAction  : 'all',
 					typeAhead      : true,
 					allowBlank     : false,
-					fieldLabel     : 'Sede',
-					name           : 'sede',
 					allowBlank     : false
 				},
-				/*{
-					fieldLabel : 'Sede',
-					name : 'sede',
-					allowBlank : false
-				},*/
 				{
 					xtype          : 'combo',
-					id             : 'id_facultad',
-					fieldLabel     : 'Facultad',
 					name           : 'facultad',
-					store          : strfacultad,
 					displayField   : 'fac_nombre',
+					valueField     : 'fac_id',
+					fieldLabel     : 'Facultad',
+					store          : strfacultad,
 					emptyText      : 'Selecione una facultad...',
               				forceSelection : true,
 					triggerAction  : 'all',
@@ -126,6 +126,11 @@ Saspa.parametros.desercion = {
 					allowBlank : false
 				},
 				{
+					fieldLabel : 'Valor',
+					name : 'valor',
+					allowBlank : false
+				},
+				{
 					xtype : 'hidden',
 					name : 'decId'
 				}
@@ -133,7 +138,7 @@ Saspa.parametros.desercion = {
 			buttonAlign : 'center',
 			buttons : 
 			[
-				{ text : 'Guardar'}
+				{ text : 'Guardar', handler : this.onEnviar }
 			]
 		});
 
@@ -214,23 +219,24 @@ Saspa.parametros.desercion = {
 	* @param object evento	
 	*/
 	onEnviar   : function(btn,evt){
-		if(btn.findParentByType('form').getForm().isValid())
+		var fm = Ext.getCmp('formDecersion');
+		if(fm.getForm().isValid())
 		{
-			Ext.getCmp('formdocentes').findById('idcedula').enable();
-			Ext.getCmp('formdocentes').getForm().submit({
+			fm.getForm().submit({
 				method    : 'POST',
 				waitTitle : 'Enviando',
 				waitMsg   : 'Enviando Datos...',
 				success   : function(fm,act){
 					Ext.Msg.alert('Mensaje',act.result.msg);
-					fm.reset();
+
 					if(act.result.success)
 					{
-						Ext.getCmp('gridocentes').getStore().reload();
+						Ext.getCmp('gridDecersion').getStore().reload();
+						fm.reset();
 					}
 				},
 				failured  : function(fm,act){
-					Ext.Msg.alert('ERROR','Ocurrio un error mientras se procesaba la solicitud');
+					Ext.Msg.alert('ERROR','Ocurrio un error mientras se enviaba la informacion');
 				}
 
 			});

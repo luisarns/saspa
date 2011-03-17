@@ -226,12 +226,47 @@ class parametrosActions extends sfActions
   */
   public function executeDesercion()
   {
-		if($this->getRequest()->getMethod() != sfRequest::POST) 
-  	 	{
-			return sfView::SUCCESS;
-	   }else {
-	   	//hacer el procesamiento de la informacion
-	   }
+	if($this->getRequest()->getMethod() != sfRequest::POST) 
+ 	{
+		return sfView::SUCCESS;
+	} else {
+   		$salida = "";
+		$objDecersion;
+
+		$dec_codigo = $this->getRequestParameter('decId');
+		$sede       = $this->getRequestParameter('sede');
+		$facultad   = $this->getRequestParameter('facultad');
+		$tipopro    = $this->getRequestParameter('tipoPrograma');
+		$periodo    = $this->getRequestParameter('periodo');
+		$valor      = $this->getRequestParameter('valor');
+   		$salida     = "{ success : true , msg : 'Prueba', sede : '.$sede.', facultad : '.$facultad.' }";
+		/*
+		if(empty($dec_codigo))
+		{
+			$objDecersion = new Decersion();
+			$objDecersion->setDecSede($sede);//es un campo de texto y $sede es un valor numerico
+			$objDecersion->setDecFacultad($facultad);
+			$objDecersion->setDecTipoPrograma($tipopro);
+			$objDecersion->setDecPeriodo($periodo);
+			$objDecersion->setDecValor(0.5);//este valor es temporal
+	   		$salida = "{ success : true , msg : 'descersion creada' }";
+		} else {
+			$objDecersion = DecersionPeer::retrieveByPk($dec_codigo);
+			if(isset($objDecersion))
+			{
+				$objDecersion->setDecSede($sede);//es un campo de texto y $sede es un valor numerico
+				$objDecersion->setDecFacultad($facultad);
+				$objDecersion->setDecTipoPrograma($tipopro);
+				$objDecersion->setDecPeriodo($periodo);
+				$objDecersion->setDecValor(0.5);//este valor es temporal
+		   		$salida = "{ success : true , msg : 'decersion actualizada' }";
+			}else{
+				$salida = "{ success : false , msg : 'decersion no existe' }";
+			}
+		}
+		$objDecersion->save();*/
+		return $this->renderText($salida);
+	}
   }
   
   /*
@@ -248,12 +283,14 @@ class parametrosActions extends sfActions
   		$datos;
   		foreach($decersiones as $dec)
   		{
-  			$datos[$pos]['decId'] = $dec->getDecId();
-  			$datos[$pos]['sede'] = $dec->getDecSede();
+			$datos[$pos]['sede'] = $dec->getDecSede();
   			$datos[$pos]['facultad'] = $dec->getDecFacultad();
+
+  			$datos[$pos]['decId'] = $dec->getDecId();
   			$datos[$pos]['periodo'] = $dec->getDecPeriodo();
   			$datos[$pos]['tipoPrograma'] = $dec->getDecTipoPrograma();
-  			
+  			$datos[$pos]['valor'] = $dec->getDecValor();
+			
   			$pos++;
   		}
   		
