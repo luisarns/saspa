@@ -55,7 +55,7 @@ echo  javascript_tag("
 		            id : 'tabla_matricula',
 		            tabType:'load',
 		            draggable:false,
-		            text:'Matricula',
+		            text:'Matricula pregrado',
 		            leaf:true
 		        },
 		        {
@@ -111,7 +111,11 @@ echo  javascript_tag("
                         }else if(node.attributes.id == 'tabla_facultad')
                         {                        
                         	actualizarPanel('central','".URL_SASPA."administracion.php/parametros/facultad');
-                        }
+                        }else if(node.attributes.id == 'tabla_matricula')
+			{
+                        	actualizarPanel('central','".URL_SASPA."administracion.php/parametros/matricula');
+			}
+
                     }
                 },
                 selectable:true,

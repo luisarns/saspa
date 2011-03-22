@@ -256,7 +256,6 @@ class parametrosActions extends sfActions
 		$tipopro    = $this->getRequestParameter('tipoPrograma');
 		$periodo    = $this->getRequestParameter('periodo');
 		$valor      = $this->getRequestParameter('valor');
-//   		$salida     = "{ success : true , msg : 'Prueba', sede : '$sede', facultad : '$facultad' }";
 		
 		if(empty($dec_codigo))
 		{
@@ -271,17 +270,20 @@ class parametrosActions extends sfActions
 			$objDecersion = DecersionPeer::retrieveByPk($dec_codigo);
 			if(isset($objDecersion))
 			{
-				//$objDecersion->setDecSede($sede);//es un campo de texto y $sede es un valor numerico
-				//$objDecersion->setDecFacultad($facultad);
 				$objDecersion->setDecTipoPrograma($tipopro);
 				$objDecersion->setDecPeriodo($periodo);
-				$objDecersion->setDecValor($valor);//este valor es temporal
+				$objDecersion->setDecValor($valor);
 		   		$salida = "{ success : true , msg : 'decersion actualizada' }";
 			}else{
 				$salida = "{ success : false , msg : 'decersion no existe' }";
 			}
 		}
-		$objDecersion->save();
+		
+		if($objDecersion instanceof Decersion)
+		{
+		    $objDecersion->save();
+		}
+		
 		return $this->renderText($salida);
 	}
   }
@@ -349,5 +351,104 @@ class parametrosActions extends sfActions
 		
   }
   
+  /**
+  * Gestiona la asignacion de valores de matricula a los programas de pregrado
+  */
+  public function executeMatricula()
+  {
+	if($this->getRequest()->getMethod() != sfRequest::POST) 
+ 	{
+		return sfView::SUCCESS;
+	}else{
+	  $salida = "";
+	  $objMatricula;
+
+	  $matCodigo   = $this->getRequestParameter('mat_id');
+	  $matFacultad = $this->getRequestParameter('mat_facultad');
+	  $matSede     = $this->getRequestParameter('mat_sede');
+	  $matAno      = $this->getRequestParameter('mat_ano');
+	  $matValor    = $this->getRequestParameter('mat_valor');
+
+	  if(empty($matCodigo))
+	  {
+	    $objMatricula = new Matricula();
+	    $objMatricula->setMatFacultad($matFacultad);
+	    $objMatricula->setMatSede($matSede);
+	    $objMatricula->setMatAno($matAno);
+	    $objMatricula->setMatValor($matValor);
+	    $salida = "{ success : true , msg : 'Matricula creada' }";
+	  } else {
+	    
+	    $objMatricula = MatriculaPeer::retrieveByPk($matCodigo);
+	    if(isset($objMatricula))
+	    {
+		$objMatricula->setMatAno($matAno);
+		$objMatricula->setMatValor($matValor);
+		$salida = "{ success : true , msg : 'Matricula actualizada' }";
+	    }else{
+		$salida = "{ success : false , msg : 'Matricula no existe' }";
+	    }
+	  }
+	  
+	  ///Para que no ocurra un error cuando la matricula no existe
+	  if($objMatricula instanceof Matricula)
+	  {
+	    $objMatricula->save();
+	  }
+	  
+	  return $this->renderText($salida);
+
+	}
+  }
+
+  /**
+  * Eliminar una matricula
+  * @param object request
+  * @return string
+  */
+  public function executeEliminarMatricula()
+  {
+	$matricula = MatriculaPeer::retrieveByPk($this->getRequestParameter('idMatricula'));
+	if(isset($matricula))
+	{
+		$matricula->delete();
+		return $this->renderText("{ success : true , msg : 'Matricula eliminada' }");
+	}else{
+		return $this->renderText("{ success : true , msg : 'La matricula no existe' }");		
+	}
+  }
+
+
+  /**
+  * Retorna una lista de los valores de matricula para pregrado
+  * @return string json
+  */
+  public function executeListarMatricula()
+  {
+    $c = new Criteria();
+    $matriculas = MatriculaPeer::doSelect($c);
+
+    $pos = 0;
+    $datos;
+    foreach($matriculas as $mat)
+    {
+      $datos[$pos]['mat_sede']     = SedePeer::retrieveByPk($mat->getMatSede())->getSedNombre();
+      $datos[$pos]['mat_facultad'] = FacultadPeer::retrieveByPk($mat->getMatFacultad())->getFacNombre();
+      $datos[$pos]['mat_id']        = $mat->getMatId();
+      $datos[$pos]['mat_ano']      = $mat->getMatAno();
+      $datos[$pos]['mat_valor']    = $mat->getMatValor();
+      $pos++;
+    }
+
+    if(isset($datos))
+    {
+      $data   = json_encode($datos);
+      $salida =   '({"datos":' . $data . '})';
+    } else {
+      $salida =   '({"datos": {} })';
+    }
+
+    return $this->renderText($salida);
+  }
   
 }

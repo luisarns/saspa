@@ -520,3 +520,31 @@ COMMENT ON TABLE "sede" IS '';
 
 
 SET search_path TO public;
+-----------------------------------------------------------------------------
+-- matricula_pregrado
+-----------------------------------------------------------------------------
+
+DROP TABLE "matricula_pregrado" CASCADE;
+
+DROP SEQUENCE "matricula_pregrado_seq";
+
+CREATE SEQUENCE "matricula_pregrado_seq";
+
+
+CREATE TABLE "matricula_pregrado"
+(
+	"mat_id" INTEGER  NOT NULL,
+	"mat_ano" VARCHAR(8),
+	"mat_sede" INTEGER,
+	"mat_facultad" INTEGER,
+	"mat_valor" FLOAT,
+	PRIMARY KEY ("mat_id")
+);
+
+COMMENT ON TABLE "matricula_pregrado" IS '';
+
+
+SET search_path TO public;
+ALTER TABLE "matricula_pregrado" ADD CONSTRAINT "matricula_pregrado_FK_1" FOREIGN KEY ("mat_sede") REFERENCES "sede" ("sed_codigo") ON DELETE CASCADE;
+
+ALTER TABLE "matricula_pregrado" ADD CONSTRAINT "matricula_pregrado_FK_2" FOREIGN KEY ("mat_facultad") REFERENCES "facultad" ("fac_id") ON DELETE CASCADE;

@@ -28,6 +28,12 @@ abstract class BaseFacultad extends BaseObject  implements Persistent {
 	protected $lastDecersionCriteria = null;
 
 	
+	protected $collMatriculas;
+
+	
+	protected $lastMatriculaCriteria = null;
+
+	
 	protected $alreadyInSave = false;
 
 	
@@ -172,6 +178,14 @@ abstract class BaseFacultad extends BaseObject  implements Persistent {
 				}
 			}
 
+			if ($this->collMatriculas !== null) {
+				foreach($this->collMatriculas as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			$this->alreadyInSave = false;
 		}
 		return $affectedRows;
@@ -223,6 +237,14 @@ abstract class BaseFacultad extends BaseObject  implements Persistent {
 
 				if ($this->collDecersions !== null) {
 					foreach($this->collDecersions as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collMatriculas !== null) {
+					foreach($this->collMatriculas as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -346,6 +368,10 @@ abstract class BaseFacultad extends BaseObject  implements Persistent {
 
 			foreach($this->getDecersions() as $relObj) {
 				$copyObj->addDecersion($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getMatriculas() as $relObj) {
+				$copyObj->addMatricula($relObj->copy($deepCopy));
 			}
 
 		} 
@@ -546,6 +572,111 @@ abstract class BaseFacultad extends BaseObject  implements Persistent {
 		$this->lastDecersionCriteria = $criteria;
 
 		return $this->collDecersions;
+	}
+
+	
+	public function initMatriculas()
+	{
+		if ($this->collMatriculas === null) {
+			$this->collMatriculas = array();
+		}
+	}
+
+	
+	public function getMatriculas($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseMatriculaPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collMatriculas === null) {
+			if ($this->isNew()) {
+			   $this->collMatriculas = array();
+			} else {
+
+				$criteria->add(MatriculaPeer::MAT_FACULTAD, $this->getFacId());
+
+				MatriculaPeer::addSelectColumns($criteria);
+				$this->collMatriculas = MatriculaPeer::doSelect($criteria, $con);
+			}
+		} else {
+						if (!$this->isNew()) {
+												
+
+				$criteria->add(MatriculaPeer::MAT_FACULTAD, $this->getFacId());
+
+				MatriculaPeer::addSelectColumns($criteria);
+				if (!isset($this->lastMatriculaCriteria) || !$this->lastMatriculaCriteria->equals($criteria)) {
+					$this->collMatriculas = MatriculaPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastMatriculaCriteria = $criteria;
+		return $this->collMatriculas;
+	}
+
+	
+	public function countMatriculas($criteria = null, $distinct = false, $con = null)
+	{
+				include_once 'lib/model/om/BaseMatriculaPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(MatriculaPeer::MAT_FACULTAD, $this->getFacId());
+
+		return MatriculaPeer::doCount($criteria, $distinct, $con);
+	}
+
+	
+	public function addMatricula(Matricula $l)
+	{
+		$this->collMatriculas[] = $l;
+		$l->setFacultad($this);
+	}
+
+
+	
+	public function getMatriculasJoinSede($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseMatriculaPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collMatriculas === null) {
+			if ($this->isNew()) {
+				$this->collMatriculas = array();
+			} else {
+
+				$criteria->add(MatriculaPeer::MAT_FACULTAD, $this->getFacId());
+
+				$this->collMatriculas = MatriculaPeer::doSelectJoinSede($criteria, $con);
+			}
+		} else {
+									
+			$criteria->add(MatriculaPeer::MAT_FACULTAD, $this->getFacId());
+
+			if (!isset($this->lastMatriculaCriteria) || !$this->lastMatriculaCriteria->equals($criteria)) {
+				$this->collMatriculas = MatriculaPeer::doSelectJoinSede($criteria, $con);
+			}
+		}
+		$this->lastMatriculaCriteria = $criteria;
+
+		return $this->collMatriculas;
 	}
 
 } 

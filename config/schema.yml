@@ -171,3 +171,11 @@ propel:
     sed_codigo:  { type : integer, autoIncrement: true, primaryKey: true }
     sed_tipo:    { type : varchar(40) }
     sed_nombre:  { type : varchar(80) }
+
+  matricula_pregrado:
+    _attributes  : { phpName: Matricula, idMetodo: native }
+    mat_id       : { type: integer, autoIncrement: true, primaryKey: true }
+    mat_ano      : { type: varchar(8) }
+    mat_sede     : { type : integer,  foreignTable : sede, foreignReference : sed_codigo, onDelete : cascade  }
+    mat_facultad : { type : integer,  foreignTable : facultad,    foreignReference : fac_id, onDelete : cascade }
+    mat_valor    : { type : float }
