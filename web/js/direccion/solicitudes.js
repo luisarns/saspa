@@ -40,8 +40,7 @@
   
   
   function mostrarFormCrearSol()
-  { 
-  		Ext.getCmp('grid_solicitud').getForm().reset();
-      //crudSolicitudes.getForm().reset();
+  {
+      crudSolicitudes.getForm().reset();
       reiniciarCampos();
   }

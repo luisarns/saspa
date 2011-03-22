@@ -200,6 +200,23 @@ class parametrosActions extends sfActions
 	}
   }
 
+  /**
+  * Eliminar el registro de una decersion
+  * @param string idDecersion : el identificador de la decersion a eliminar
+  * @return string
+  */
+  public function executeEliminarDecersion()
+  {
+	$decersion = DecersionPeer::retrieveByPk($this->getRequestParameter('idDecersion'));
+	if(!isset($decersion))
+	{
+		return $this->renderText("{ success : true , msg : 'El registro no existe' }");		
+	}else{
+		$decersion->delete();
+		return $this->renderText("{ success : true , msg : 'Registro eliminado' }");
+	}
+	
+  }
 
   /**
   * Eliminar una facultad
@@ -239,8 +256,8 @@ class parametrosActions extends sfActions
 		$tipopro    = $this->getRequestParameter('tipoPrograma');
 		$periodo    = $this->getRequestParameter('periodo');
 		$valor      = $this->getRequestParameter('valor');
-   		$salida     = "{ success : true , msg : 'Prueba', sede : '.$sede.', facultad : '.$facultad.' }";
-		/*
+//   		$salida     = "{ success : true , msg : 'Prueba', sede : '$sede', facultad : '$facultad' }";
+		
 		if(empty($dec_codigo))
 		{
 			$objDecersion = new Decersion();
@@ -248,23 +265,23 @@ class parametrosActions extends sfActions
 			$objDecersion->setDecFacultad($facultad);
 			$objDecersion->setDecTipoPrograma($tipopro);
 			$objDecersion->setDecPeriodo($periodo);
-			$objDecersion->setDecValor(0.5);//este valor es temporal
+			$objDecersion->setDecValor($valor);//este valor es temporal
 	   		$salida = "{ success : true , msg : 'descersion creada' }";
 		} else {
 			$objDecersion = DecersionPeer::retrieveByPk($dec_codigo);
 			if(isset($objDecersion))
 			{
-				$objDecersion->setDecSede($sede);//es un campo de texto y $sede es un valor numerico
-				$objDecersion->setDecFacultad($facultad);
+				//$objDecersion->setDecSede($sede);//es un campo de texto y $sede es un valor numerico
+				//$objDecersion->setDecFacultad($facultad);
 				$objDecersion->setDecTipoPrograma($tipopro);
 				$objDecersion->setDecPeriodo($periodo);
-				$objDecersion->setDecValor(0.5);//este valor es temporal
+				$objDecersion->setDecValor($valor);//este valor es temporal
 		   		$salida = "{ success : true , msg : 'decersion actualizada' }";
 			}else{
 				$salida = "{ success : false , msg : 'decersion no existe' }";
 			}
 		}
-		$objDecersion->save();*/
+		$objDecersion->save();
 		return $this->renderText($salida);
 	}
   }
@@ -283,21 +300,19 @@ class parametrosActions extends sfActions
   		$datos;
   		foreach($decersiones as $dec)
   		{
-			$datos[$pos]['sede'] = $dec->getDecSede();
-  			$datos[$pos]['facultad'] = $dec->getDecFacultad();
-
-  			$datos[$pos]['decId'] = $dec->getDecId();
-  			$datos[$pos]['periodo'] = $dec->getDecPeriodo();
+			$datos[$pos]['sede']         = SedePeer::retrieveByPk($dec->getDecSede())->getSedNombre();
+  			$datos[$pos]['facultad']     = FacultadPeer::retrieveByPk($dec->getDecFacultad())->getFacNombre();
+  			$datos[$pos]['decId']        = $dec->getDecId();
+  			$datos[$pos]['periodo']      = $dec->getDecPeriodo();
   			$datos[$pos]['tipoPrograma'] = $dec->getDecTipoPrograma();
-  			$datos[$pos]['valor'] = $dec->getDecValor();
-			
+  			$datos[$pos]['valor']        = $dec->getDecValor();
   			$pos++;
   		}
   		
   		if(isset($datos))
   		{
-         $data   = json_encode($datos);
-         $salida =   '({"datos":' . $data . '})';
+		         $data   = json_encode($datos);
+		         $salida =   '({"datos":' . $data . '})';
   		} else {
   			$salida =   '({"datos": {} })';
   		}

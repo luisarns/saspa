@@ -1,4 +1,5 @@
-Marzo 15 de 2011 8:00 pm
+Año 2011
+Marzo 15 8:00 pm
 El comando symfony propel-build-model me genera el siguiente error:
 [phingcall] Unable to return 'affix' for unknown CreoleType:
 Solucion:
@@ -11,3 +12,7 @@ Solucion: Cambiar el tipo de la constante in CreoleTypes.php linea 39
 const TEXT = 30; //php 5.3.0 fix, usando un entero no usado
 Fuente: http://www.alexfilatov.com/2009/12/09/symfony-unable-to-return-affix-for-unknown-creoletype/
 Resultado: Funciono
+
+Marzo 16 9:09 pm
+El combobox debe tener la propiedad hidenName si se quiere enviar el valor expecificado en  valueField
+si no es asi este no enviara el identificador sino el valor de la propiedad displayField del combo

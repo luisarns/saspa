@@ -20,7 +20,7 @@ Saspa.parametros.desercion = {
 			url  : URL_SASPA+'administracion.php/parametros/listarFacultades',
 			fields   : ['fac_id','fac_nombre']
 		});
-		
+
 		var strSede = new Ext.data.JsonStore({
 			url  : URL_SASPA+'administracion.php/parametros/listarSedes',
 			fields   : ['sed_codigo','sed_nombre']
@@ -42,14 +42,13 @@ Saspa.parametros.desercion = {
 			}
 		];
 
-
 		decStore.load();
 		
 		var decColModel = new Ext.grid.ColumnModel([
 			{ header : "Periodo",       width : 60,  sortable : true, dataIndex : 'periodo' },
 			{ header : "Sede",          width : 80,  sortable : true, dataIndex : 'sede' },
 			{ header : "Facultad",      width : 80,  sortable : true, dataIndex : 'facultad' },
-			{ header : "Tipo Programa", width : 100, sortable : true, dataIndex : 'tipo_programa' },
+			{ header : "Tipo Programa", width : 100, sortable : true, dataIndex : 'tipoPrograma' },
 			{ header : "Valor(%)", width : 100, sortable : true, dataIndex : 'valor' }
 		]);
 		
@@ -57,7 +56,12 @@ Saspa.parametros.desercion = {
 			singleSelect : true,
 			listeners : {
 				rowselect : function(sm,row,rec) {
+//					strfacultad.load();
+//					strSede.load();
 					decForm.getForm().loadRecord(rec);
+					//Desactivo la sede y la facultad
+					Ext.getCmp('id_sede').disable();
+					Ext.getCmp('id_facultad').disable();
 				}
 			}
 		});
@@ -90,7 +94,7 @@ Saspa.parametros.desercion = {
 			[	
 				{
 					xtype          : 'combo',
-					name           : 'sede',
+					hiddenName     : 'sede',
 					displayField   : 'sed_nombre',
 					valueField     : 'sed_codigo',
 					fieldLabel     : 'Sede',
@@ -100,25 +104,40 @@ Saspa.parametros.desercion = {
 					triggerAction  : 'all',
 					typeAhead      : true,
 					allowBlank     : false,
-					allowBlank     : false
+					id             : 'id_sede'
 				},
 				{
 					xtype          : 'combo',
-					name           : 'facultad',
 					displayField   : 'fac_nombre',
 					valueField     : 'fac_id',
+					hiddenName     : 'facultad',
 					fieldLabel     : 'Facultad',
 					store          : strfacultad,
 					emptyText      : 'Selecione una facultad...',
               				forceSelection : true,
 					triggerAction  : 'all',
 					typeAhead      : true,
-					allowBlank     : false
+					allowBlank     : false,
+					id             : 'id_facultad'
 				},
 				{
-					fieldLabel : 'Tipo programa',
-					name : 'tipoPrograma',
-					allowBlank : false
+					xtype          : 'combo',
+					fieldLabel     : 'Tipo programa',
+					name           : 'tipoPrograma',
+					mode           : 'local',
+					store: [
+					      	'Tecnologico',
+					      	'Profesional',
+					      	'Especializacion',
+					      	'Especializacion Medico Clinica',
+					      	'Maestria de Profundizacion',
+					      	'Maestria de Investigacion',
+					      	'Doctorado'
+					],
+					triggerAction  : 'all',
+					forceSelection : true,
+					editable       : false,
+					allowBlank     : false
 				},
 				{
 					fieldLabel : 'Periodo',
@@ -132,7 +151,8 @@ Saspa.parametros.desercion = {
 				},
 				{
 					xtype : 'hidden',
-					name : 'decId'
+					name  : 'decId',
+					id    : 'id_decId'
 				}
 			],
 			buttonAlign : 'center',
@@ -166,25 +186,24 @@ Saspa.parametros.desercion = {
 	* @param object evento	
 	*/
 	onEliminar : function(btn,evt){
-		var rec  = Ext.getCmp('gridocentes').getSelectionModel().getSelected();
+		var rec  = Ext.getCmp('gridDecersion').getSelectionModel().getSelected();
 		if(!Ext.isEmpty(rec))
 		{
 			Ext.Msg.show({
 				title   : 'Confirmacion',
-				msg     : '¿Desea eliminar al docente '+ rec.get('nombre') +' '+ rec.get('apellidos') +'?',
+				msg     : '¿Desea eliminar el registro?',
 				buttons : Ext.Msg.YESNO,
 				fn      : function(btn){
 					if(btn == 'yes'){
 						Ext.Ajax.request({
-							url     : URL_SASPA+'administracion.php/parametros/eliminarDocente',
+							url     : URL_SASPA+'administracion.php/parametros/eliminarDecersion',
 							params  : {
-								cedulaDocente : rec.get('cedula')
+								idDecersion : rec.get('decId')
 							},
 							success : function(resp){
-								//para atender las respuestas del servidor
 								var jsresp = Ext.decode(resp.responseText);
 								Ext.Msg.alert('Server', jsresp.msg);
-								Ext.getCmp('gridocentes').getStore().reload();
+								Ext.getCmp('gridDecersion').getStore().reload();
 							},
 							failure : function(resp){
 								Ext.Msg.alert('ERROR','Ocurrio un error mientras se procesaba la solicitud');
@@ -207,10 +226,10 @@ Saspa.parametros.desercion = {
 	* @param object evento	
 	*/
 	onCrear    : function(btn,evt){
-		Ext.getCmp('formdocentes').findById('idcedula').enable();
-		var bsform = Ext.getCmp('formdocentes').getForm().reset();
-		bsform.clearInvalid();
-		Ext.getCmp("idoperacion").setValue('Crear');
+		Ext.getCmp('id_sede').enable();
+		Ext.getCmp('id_facultad').enable();
+		Ext.getCmp('formDecersion').getForm().reset();
+		Ext.getCmp('id_decId').setValue('');
 	},
 	/**
 	* Envia los datos del formulario al servidor 
