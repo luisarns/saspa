@@ -548,3 +548,23 @@ SET search_path TO public;
 ALTER TABLE "matricula_pregrado" ADD CONSTRAINT "matricula_pregrado_FK_1" FOREIGN KEY ("mat_sede") REFERENCES "sede" ("sed_codigo") ON DELETE CASCADE;
 
 ALTER TABLE "matricula_pregrado" ADD CONSTRAINT "matricula_pregrado_FK_2" FOREIGN KEY ("mat_facultad") REFERENCES "facultad" ("fac_id") ON DELETE CASCADE;
+
+-----------------------------------------------------------------------------
+-- parametros
+-----------------------------------------------------------------------------
+
+DROP TABLE "parametros" CASCADE;
+
+
+CREATE TABLE "parametros"
+(
+	"par_nombre" VARCHAR(50)  NOT NULL,
+	"par_valor" FLOAT,
+	"par_ano" VARCHAR(4),
+	PRIMARY KEY ("par_nombre")
+);
+
+COMMENT ON TABLE "parametros" IS '';
+
+
+SET search_path TO public;

@@ -179,3 +179,8 @@ propel:
     mat_sede     : { type : integer,  foreignTable : sede, foreignReference : sed_codigo, onDelete : cascade  }
     mat_facultad : { type : integer,  foreignTable : facultad,    foreignReference : fac_id, onDelete : cascade }
     mat_valor    : { type : float }
+
+  parametros:
+    par_nombre  :  { type : varchar(50), primaryKey : true }
+    par_valor   :  { type : float }
+    par_ano     :  { type : varchar(4) }
