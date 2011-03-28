@@ -450,5 +450,54 @@ class parametrosActions extends sfActions
 
     return $this->renderText($salida);
   }
+
+  /**
+  * Se encarga del manejo de los parametros del sistema que no son
+  * tablas
+  * @return void
+  */
+  public function executeParametros()
+  {
+    if($this->getRequest()->getMethod() != sfRequest::POST)
+    {
+      return sfView::SUCCESS;
+    }else{
+      
+    }
+    
+    
+  }
   
+  /**
+  * Retorna los registros de la tabla parametros y los envia al cliente
+  * en una cadena json
+  * @return string $salida : la cadena json con los registros
+  */
+  public function executeListarParametros(){
+    
+    $c = new Criteria();
+    $parametros = ParametrosPeer::doSelect($c);
+    
+    $pos = 0;
+    $datos;
+    foreach($parametros as $param)
+    {
+      $datos[$pos]['paraNombre'] = $param->getParNombre();
+      $datos[$pos]['paraAno']    = $param->getParAno();
+      $datos[$pos]['paraValor']  = $param->getParValor();
+      $pos++;
+    }
+
+    if(isset($datos))
+    {
+      $data   = json_encode($datos);
+      $salida =   '({"datos":' . $data . '})';
+    } else {
+      $salida =   '({"datos": {} })';
+    }
+    return $this->renderText($salida);
+    
+  }
+
+
 }

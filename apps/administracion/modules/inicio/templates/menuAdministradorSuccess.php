@@ -69,8 +69,6 @@ echo  javascript_tag("
 	    }
     ];
     
-    //CONTINUAR AQUI PARA LA DEFINICION DEL MENU DE LOS PARAMETROS DEL SISTEMA
-
 
     Saspa.Enlaces = new Ext.Panel({
         renderTo: 'menuAdministrador',
@@ -114,6 +112,9 @@ echo  javascript_tag("
                         }else if(node.attributes.id == 'tabla_matricula')
 			{
                         	actualizarPanel('central','".URL_SASPA."administracion.php/parametros/matricula');
+			}else if(node.attributes.id == 'tabla_independientes')
+			{
+				actualizarPanel('central','".URL_SASPA."administracion.php/parametros/parametros');
 			}
 
                     }
