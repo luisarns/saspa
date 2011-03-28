@@ -345,9 +345,8 @@
       Saspa.Solicitudes = new Ext.Panel({
         renderTo: 'Solicitudes',
         layout:   'column',
-        autoWidth: true,//nvo
-        autoHeight: true,//nvo
-        //style:    'width: 100%; height: 100%;', 
+        autoWidth: true,
+        autoHeight: true,
         fitToFrame: true,
         items: [ {width: '100%', height: '100%', frame: true, autoScroll: true, items:[crudSolicitudes]} ]
       });

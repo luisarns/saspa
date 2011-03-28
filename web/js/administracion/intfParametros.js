@@ -134,8 +134,38 @@ Saspa.parametros.parametros = {
     Ext.getCmp('parm_nombre').enable();
     Ext.getCmp('oper_id').setValue('cre');
   },
-  onEnviar : function(btn,evt){
-    Ext.Msg.alert('Informe','Enviar la informacion');
+  onEnviar : function(btn,evt) {
+    var fm = Ext.getCmp('formParametros');
+    
+    //Activo los campos para que sean enviados automaticamente en el submit 
+    //del formulario
+    Ext.getCmp('parm_ano').enable();
+    Ext.getCmp('parm_nombre').enable();
+    if(fm.getForm().isValid())
+    {
+      fm.getForm().submit({
+	method    : 'POST',
+	waitTitle : 'Enviando',
+	waitMsg   : 'Enviando Datos...',
+	success   : function(fm,act) {
+	  
+	  Ext.Msg.alert('Mensaje',act.result.msg);
+	  if(act.result.success)
+	  {
+	    Ext.getCmp('gridParametros').getStore().reload();
+	    fm.reset();
+	    Ext.getCmp('parm_ano').disable();
+	  }
+	  
+	},
+	failured  : function(fm,act) {
+	      Ext.Msg.alert('ERROR','Ocurrio un error mientras se enviaba la informacion');
+	}
+      });
+    } else {
+      Ext.Msg.alert('INFORM','Los campos en rojo son obligatorios');
+    }
+    
   }
 
 }

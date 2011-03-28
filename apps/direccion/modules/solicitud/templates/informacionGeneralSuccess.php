@@ -54,7 +54,7 @@
     {
       $datos["opcionespagoperiodo"] = $informGneral->getIngFormaPago();
       $datos["valorunico"]          = $informGneral->getIngValor();//el valor pagado en SMMLV
-    }else{
+    } else {
        
        $c1 = new Criteria();
        $c1->add(ValorDiferenciadoPeer::VAD_ING_ID, $datos["ing_id"]);
@@ -77,15 +77,10 @@
   
   echo use_helper('Javascript');
   echo javascript_tag("
-
-	 //esto es una prueba eliminar Msg.alert despues de terminar   
-    //Ext.Msg.alert('".$solId."');
-    
     
     //paso los datos tomados de la bd al formulario 
     var datosInformacionGeneral = Ext.decode('".$datosInformacionGeneral."');
     
-    //INICIO Definicion de los campos necesarios para el formulario informacion general
     //defino un campo oculto donde almaceno el identificador del formulario informacion general
     var tfingid = new Ext.form.Hidden({
       id   : 'tfingid',
@@ -320,9 +315,7 @@
     * el uso del objeto  (datosInformacionGeneral)
     */
     function loadInformGeneral()
-    {
-      //se encarga de establecer los campos que ya han sido diligenciados por el usuario
-      
+    {      
       ///Inicio los campos manejados por el servidor
       tfsolicitudnumero.setValue(datosInformacionGeneral.solicitudnumero);
       tfsolicitudfecha.setValue(datosInformacionGeneral.fechasolicitud);      
@@ -371,8 +364,8 @@
           });
           
           //mostrar el grid 
-          Ext.getCmp('gridvaldiferenciado').setVisible(true); //muestro el grid 
-          Ext.getCmp('gridvaldiferenciado').doLayout(); // aplico el layout nuevamente al grid
+          Ext.getCmp('gridvaldiferenciado').setVisible(true);
+          Ext.getCmp('gridvaldiferenciado').doLayout(); // aplico el layout al grid
         }
         
       }
@@ -418,7 +411,7 @@
                     }
                   ]
                 },
-                tfingid, //este campo almacena el id del formulario cuando se trata de una actualizacion
+                tfingid, //Almacena el id del formulario
                 tfsolicitante,
                 tffacultad,
                 tfescuela,
@@ -560,7 +553,7 @@
                             allowNegative  : false, 
                             minValue       : 0,
                             nanText        : 'Solo se permiten numeros',
-                            //allowBlank     : false,
+                            //allowBlank   : false,
                             blankText      : 'Este campo es obligatorio',
                             anchor         : '90%'
                      }) 
@@ -584,17 +577,13 @@
               ]
             }//los campos para especificar la forma de pago
             
-          ]//dentro de esta eteq van los primeros campos del formulario
+          ]
         }
       ],
       buttons   : [{text : 'Salir', handler : enviarSalir},{text: 'Siguiente', handler : enviarSiguiente}]
     });
     
-    
-    //agregar la escucha (listener) al formulario para el evento
-    //evento Ext.form.FormPanel beforerender : ( Ext.Component this ) antes de renderizar el panel o
-    //evento Ext.form.FormPanel beforeshow : ( Ext.Component this ) antes de mostrar el panel 
-    // render 
+    //Agrego el evento render al form para que se actualice no mas este completamente renderizado
     formInformacionGeneral.on('render',loadInformGeneral);
     
     function enviarSiguiente()
@@ -639,10 +628,10 @@
                 },
                 success   : function(form, action)
                 {
-                  var response = action.result; //la respuesta del servidor decodificada
+                  var response = action.result;
                   
                   //despliega el formulario extructura curricular
-                  actualizarPanel('central',response.urlFormulario);//esta funcion no esta definida aqui
+                  actualizarPanel('central',response.urlFormulario);
                 },
                 failured: function(form, action)
                 {

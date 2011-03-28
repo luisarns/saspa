@@ -175,7 +175,7 @@ class solicitudActions extends sfActions
       $this->solId      = $this->getUser()->getAttribute('solicitud');
       $this->solusuario = $this->getUser()->getAttribute('usuario');
       return sfView::SUCCESS;
-    }else{
+    } else {
     
       $ing_id = $this->getRequestParameter('ing_id');
       $informacionGeneral = InformacionGeneralPeer::retrieveByPk($ing_id);

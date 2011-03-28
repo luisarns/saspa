@@ -13,7 +13,6 @@ class parametrosActions extends sfActions
   
   /**
   * Gestiona los docentes (Executes index action)
-  *
   */
   public function executeIndex()
   {
@@ -97,7 +96,7 @@ class parametrosActions extends sfActions
 		return $this->renderText(json_encode($datos));
   }
   
-  /*
+  /**
   * Lista las sedes
   * @return string json
   */
@@ -461,8 +460,41 @@ class parametrosActions extends sfActions
     if($this->getRequest()->getMethod() != sfRequest::POST)
     {
       return sfView::SUCCESS;
-    }else{
+    }else {
+      $salida = "";
+      $objParametro;
+
+      $valor = $this->getRequestParameter('paraValor');
+      $param = $this->getRequestParameter('paraNombre');
+      $ano   = $this->getRequestParameter('paraAno');
+      $ope   = $this->getRequestParameter('operacion');
       
+      if($ope == 'cre'){
+      
+	$objParametro = new Parametros();
+	$objParametro->setParNombre($param);
+	$objParametro->setParAno($ano);
+	$objParametro->setParValor($valor);
+	$salida = "{ success : true , msg : 'Parametro creado' }";
+	
+      } else if( $ope = 'act') {
+	
+	$objParametro = ParametrosPeer::retrieveByPk($param,$ano);
+	if(isset($objParametro)){
+	  $objParametro->setParValor($valor);
+	  $salida = "{ success : true , msg : 'Parametro actualizado' }";
+	}else{
+	  $salida = "{ success : true , msg : 'Parametro no existe, no se pudo actualizar' }";
+	}
+	
+      }
+       
+      if($objParametro instanceof Parametros)
+      {
+	$objParametro->save();
+      }      
+      return $this->renderText($salida);
+
     }
     
     

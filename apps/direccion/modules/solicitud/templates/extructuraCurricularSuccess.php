@@ -1,8 +1,7 @@
 <?php
   echo  '<div id="extructuraCurricular" style="width:915px;"></div>';
   
-  //recupero la informacion de las asignaturas que hay en el nuevo programa 
-  //para el cual es creada la solicitud
+  //Selecciono todas las asignaturas registradas para esta solicitud
   $c = new Criteria();
   $c->add(ExtructuraCurricularPeer::ECU_SOL_ID, $sol_id);
   $extCurricular = ExtructuraCurricularPeer::doSelect($c);
@@ -31,7 +30,7 @@
     $datosCurriculares = json_encode($datos);
   }
   
-  //obtengo los campos nivel academico y numero de periodos de la tabla informacion_general
+  //Valores necesarios para la inclusion del parametro (Valor hora docente x categoria)
   $c1 = new Criteria();
   $c1->add(InformacionGeneralPeer::ING_SOL_ID, $sol_id);
   $informacionGeneral = InformacionGeneralPeer::doSelectOne($c1);  
@@ -39,24 +38,32 @@
   $nivelAcademico;
   $numeroPeriodos;
   if(isset($informacionGeneral)){
-    $nivelAcademico = $informacionGeneral->getIngNivelAcademico();
     $numeroPeriodos = $informacionGeneral->getIngDuracionPrograma();
-  }
+    
+    //$nivelAcademico = $informacionGeneral->getIngNivelAcademico();
+    if($informacionGeneral->isPregrado()){
+      $nivelAcademico = 'Pregrado';
+    }else {
+      $nivelAcademico = 'Postgrado';
+    }
+    
+  }  
   
-  //obtener los valores de las horas para cada docente
+  //Recuperos los valores del parametro del sistema
   $c1 = new Criteria();
-  $c1->add(ValorHoraDocentePeer::VHD_NIVEL_PROGRAMA, $nivelAcademico); //obtengo todos los valores de hora para el nivel academico
+  $c1->add(ValorHoraDocentePeer::VHD_NIVEL_PROGRAMA, $nivelAcademico);
   $valoresHorasbd = ValorHoraDocentePeer::doSelect($c1);
   
-  $valoresHoras = array(); //crear el arreglo para almacenar los valores de hora
+  //Creo un arreglo para almacenar los valores de hora para todos los docentes
+  $valoresHoras = array();
   foreach($valoresHorasbd as $valorHora)
   {
-    array_push($valoresHoras,array(
+    array_push($valoresHoras,array (
       "categoria"=>$valorHora->getVhdCategoriaDocente(),
-      "hdicomo" => array( 
-           "Hora_catedra"    => array($valorHora->getVhdHoraCatedra(),($valorHora->getVhdHoraCatedra()*0.5) ),
-           "Bonificado"      => array($valorHora->getVhdNombradoBonificado(),($valorHora->getVhdNombradoBonificado()*0.5) ),
-           "Carga_academica" => array($valorHora->getVhdNombradoCargaAcademica(),($valorHora->getVhdNombradoCargaAcademica()*0.5) )
+      "hdicomo" => array ( 
+           "Hora_catedra"    => array($valorHora->getHoraCatedra(),($valorHora->getHoraCatedra()*1.5) ),
+           "Bonificado"      => array($valorHora->getNombradoBonificado(),($valorHora->getNombradoBonificado()*1.5) ),
+           "Carga_academica" => array($valorHora->getNombradoCargaAcademica(),($valorHora->getNombradoCargaAcademica()*1.5) )
          )
     ));
   }
@@ -115,7 +122,8 @@
       allowBlank: false
     });
 
-    var hrdidfd = new Ext.form.ComboBox({//Horas dictadas como
+    //Como son dictadas las horas de clase
+    var hrdidfd = new Ext.form.ComboBox({
       mode: 'local',
       store: ['Hora catedra','Bonificado','Carga academica'],
       triggerAction: 'all',
@@ -136,9 +144,19 @@
       {header : 'Programas que comparte', tooltip : 'Numero de programas que comparten la asignatura',width : 132, sortable : true , dataIndex : 'num_programa_comparte', editor : prcomfd },
       {header : 'Categoria docente', tooltip : 'Categoria del docente' ,width : 110, sortable : true, dataIndex : 'categoria_docente', editor : catedfd },
       {header : 'Horas dictadas como', width : 120, sortable : true, dataIndex : 'horas_dictadas_como', editor : hrdidfd },
-      {header : 'Valor hora', width : 100, sortable : true, dataIndex : 'valor_hora', editor : valhrfd }
+      {header : 'Valor hora', width : 100, sortable : true, dataIndex : 'valor_hora', editor : valhrfd, renderer : fmaPesos}
     ]);
     
+    function fmaPesos(val)
+    {
+		if(val > 1000)
+			return '<span style=\"color:green;\">' + Ext.util.Format.usMoney(val) + '</span>';	
+		if(val < 0)
+			return '<span style=\"color:red;\">' + Ext.util.Format.usMoney(val) + '</span>';
+		
+		return val;
+    }
+
     var selModel = new Ext.grid.RowSelectionModel({singleSelect :true});
     
     var gridexcurricular  = new Ext.grid.EditorGridPanel({
@@ -227,7 +245,7 @@
     
     
     function guardar(){
-      var modified = store.getModifiedRecords();//gridexcurricular.getStore().getModifiedRecords();//obtengo los registros modificados
+      var modified = store.getModifiedRecords();//obtengo los registros modificados
       if(!Ext.isEmpty(modified)){
         var recordsToSend = [];
       
@@ -327,7 +345,11 @@
     {
       //asignar el valor de hora minimo dado los parametros anteriores
       Ext.each(valoresDeHora, function (valhoraobj){
-        if(valhoraobj.categoria == evento.record.get('categoria_docente'))
+        
+        //Si la categoria del registro seleccionado corresponde a la categoria
+        //para el valor de hora
+        
+	if(valhoraobj.categoria == evento.record.get('categoria_docente'))
         {
           var horaDictadasComo = evento.record.get('horas_dictadas_como');
           horaDictadasComo = horaDictadasComo.replace(/ /g,'_');
@@ -335,8 +357,10 @@
           evento.record.set('valor_hora',arrg[0]);//paso el valor minimo permitido al campo valor_hora
           return true;
         }
+        
       });
-      return false; //si no se encuentra coincidencia
+      
+      return false;
     }  
   
   
