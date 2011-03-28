@@ -182,5 +182,5 @@ propel:
 
   parametros:
     par_nombre  :  { type : varchar(50), primaryKey : true }
+    par_ano     :  { type : varchar(4),  primaryKey : true }
     par_valor   :  { type : float }
-    par_ano     :  { type : varchar(4) }

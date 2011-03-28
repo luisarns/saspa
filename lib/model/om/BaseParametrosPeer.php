@@ -23,10 +23,10 @@ abstract class BaseParametrosPeer {
 	const PAR_NOMBRE = 'parametros.PAR_NOMBRE';
 
 	
-	const PAR_VALOR = 'parametros.PAR_VALOR';
+	const PAR_ANO = 'parametros.PAR_ANO';
 
 	
-	const PAR_ANO = 'parametros.PAR_ANO';
+	const PAR_VALOR = 'parametros.PAR_VALOR';
 
 	
 	private static $phpNameMap = null;
@@ -34,17 +34,17 @@ abstract class BaseParametrosPeer {
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('ParNombre', 'ParValor', 'ParAno', ),
-		BasePeer::TYPE_COLNAME => array (ParametrosPeer::PAR_NOMBRE, ParametrosPeer::PAR_VALOR, ParametrosPeer::PAR_ANO, ),
-		BasePeer::TYPE_FIELDNAME => array ('par_nombre', 'par_valor', 'par_ano', ),
+		BasePeer::TYPE_PHPNAME => array ('ParNombre', 'ParAno', 'ParValor', ),
+		BasePeer::TYPE_COLNAME => array (ParametrosPeer::PAR_NOMBRE, ParametrosPeer::PAR_ANO, ParametrosPeer::PAR_VALOR, ),
+		BasePeer::TYPE_FIELDNAME => array ('par_nombre', 'par_ano', 'par_valor', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('ParNombre' => 0, 'ParValor' => 1, 'ParAno' => 2, ),
-		BasePeer::TYPE_COLNAME => array (ParametrosPeer::PAR_NOMBRE => 0, ParametrosPeer::PAR_VALOR => 1, ParametrosPeer::PAR_ANO => 2, ),
-		BasePeer::TYPE_FIELDNAME => array ('par_nombre' => 0, 'par_valor' => 1, 'par_ano' => 2, ),
+		BasePeer::TYPE_PHPNAME => array ('ParNombre' => 0, 'ParAno' => 1, 'ParValor' => 2, ),
+		BasePeer::TYPE_COLNAME => array (ParametrosPeer::PAR_NOMBRE => 0, ParametrosPeer::PAR_ANO => 1, ParametrosPeer::PAR_VALOR => 2, ),
+		BasePeer::TYPE_FIELDNAME => array ('par_nombre' => 0, 'par_ano' => 1, 'par_valor' => 2, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, )
 	);
 
@@ -101,9 +101,9 @@ abstract class BaseParametrosPeer {
 
 		$criteria->addSelectColumn(ParametrosPeer::PAR_NOMBRE);
 
-		$criteria->addSelectColumn(ParametrosPeer::PAR_VALOR);
-
 		$criteria->addSelectColumn(ParametrosPeer::PAR_ANO);
+
+		$criteria->addSelectColumn(ParametrosPeer::PAR_VALOR);
 
 	}
 
@@ -234,6 +234,9 @@ abstract class BaseParametrosPeer {
 			$comparison = $criteria->getComparison(ParametrosPeer::PAR_NOMBRE);
 			$selectCriteria->add(ParametrosPeer::PAR_NOMBRE, $criteria->remove(ParametrosPeer::PAR_NOMBRE), $comparison);
 
+			$comparison = $criteria->getComparison(ParametrosPeer::PAR_ANO);
+			$selectCriteria->add(ParametrosPeer::PAR_ANO, $criteria->remove(ParametrosPeer::PAR_ANO), $comparison);
+
 		} else { 			$criteria = $values->buildCriteria(); 			$selectCriteria = $values->buildPkeyCriteria(); 		}
 
 				$criteria->setDbName(self::DATABASE_NAME);
@@ -271,7 +274,20 @@ abstract class BaseParametrosPeer {
 			$criteria = $values->buildPkeyCriteria();
 		} else {
 						$criteria = new Criteria(self::DATABASE_NAME);
-			$criteria->add(ParametrosPeer::PAR_NOMBRE, (array) $values, Criteria::IN);
+												if(count($values) == count($values, COUNT_RECURSIVE))
+			{
+								$values = array($values);
+			}
+			$vals = array();
+			foreach($values as $value)
+			{
+
+				$vals[0][] = $value[0];
+				$vals[1][] = $value[1];
+			}
+
+			$criteria->add(ParametrosPeer::PAR_NOMBRE, $vals[0], Criteria::IN);
+			$criteria->add(ParametrosPeer::PAR_ANO, $vals[1], Criteria::IN);
 		}
 
 				$criteria->setDbName(self::DATABASE_NAME);
@@ -325,40 +341,17 @@ abstract class BaseParametrosPeer {
 	}
 
 	
-	public static function retrieveByPK($pk, $con = null)
-	{
+	public static function retrieveByPK( $par_nombre, $par_ano, $con = null) {
 		if ($con === null) {
 			$con = Propel::getConnection(self::DATABASE_NAME);
 		}
-
-		$criteria = new Criteria(ParametrosPeer::DATABASE_NAME);
-
-		$criteria->add(ParametrosPeer::PAR_NOMBRE, $pk);
-
-
+		$criteria = new Criteria();
+		$criteria->add(ParametrosPeer::PAR_NOMBRE, $par_nombre);
+		$criteria->add(ParametrosPeer::PAR_ANO, $par_ano);
 		$v = ParametrosPeer::doSelect($criteria, $con);
 
-		return !empty($v) > 0 ? $v[0] : null;
+		return !empty($v) ? $v[0] : null;
 	}
-
-	
-	public static function retrieveByPKs($pks, $con = null)
-	{
-		if ($con === null) {
-			$con = Propel::getConnection(self::DATABASE_NAME);
-		}
-
-		$objs = null;
-		if (empty($pks)) {
-			$objs = array();
-		} else {
-			$criteria = new Criteria();
-			$criteria->add(ParametrosPeer::PAR_NOMBRE, $pks, Criteria::IN);
-			$objs = ParametrosPeer::doSelect($criteria, $con);
-		}
-		return $objs;
-	}
-
 } 
 if (Propel::isInit()) {
 			try {

@@ -34,9 +34,9 @@ class ParametrosMapBuilder {
 
 		$tMap->addPrimaryKey('PAR_NOMBRE', 'ParNombre', 'string', CreoleTypes::VARCHAR, true, 50);
 
-		$tMap->addColumn('PAR_VALOR', 'ParValor', 'double', CreoleTypes::FLOAT, false, null);
+		$tMap->addPrimaryKey('PAR_ANO', 'ParAno', 'string', CreoleTypes::VARCHAR, true, 4);
 
-		$tMap->addColumn('PAR_ANO', 'ParAno', 'string', CreoleTypes::VARCHAR, false, 4);
+		$tMap->addColumn('PAR_VALOR', 'ParValor', 'double', CreoleTypes::FLOAT, false, null);
 
 	} 
 } 

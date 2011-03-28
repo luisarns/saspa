@@ -559,9 +559,9 @@ DROP TABLE "parametros" CASCADE;
 CREATE TABLE "parametros"
 (
 	"par_nombre" VARCHAR(50)  NOT NULL,
+	"par_ano" VARCHAR(4)  NOT NULL,
 	"par_valor" FLOAT,
-	"par_ano" VARCHAR(4),
-	PRIMARY KEY ("par_nombre")
+	PRIMARY KEY ("par_nombre","par_ano")
 );
 
 COMMENT ON TABLE "parametros" IS '';

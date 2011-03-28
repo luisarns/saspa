@@ -13,11 +13,11 @@ abstract class BaseParametros extends BaseObject  implements Persistent {
 
 
 	
-	protected $par_valor;
+	protected $par_ano;
 
 
 	
-	protected $par_ano;
+	protected $par_valor;
 
 	
 	protected $alreadyInSave = false;
@@ -33,17 +33,17 @@ abstract class BaseParametros extends BaseObject  implements Persistent {
 	}
 
 	
-	public function getParValor()
-	{
-
-		return $this->par_valor;
-	}
-
-	
 	public function getParAno()
 	{
 
 		return $this->par_ano;
+	}
+
+	
+	public function getParValor()
+	{
+
+		return $this->par_valor;
 	}
 
 	
@@ -57,16 +57,6 @@ abstract class BaseParametros extends BaseObject  implements Persistent {
 		if ($this->par_nombre !== $v) {
 			$this->par_nombre = $v;
 			$this->modifiedColumns[] = ParametrosPeer::PAR_NOMBRE;
-		}
-
-	} 
-	
-	public function setParValor($v)
-	{
-
-		if ($this->par_valor !== $v) {
-			$this->par_valor = $v;
-			$this->modifiedColumns[] = ParametrosPeer::PAR_VALOR;
 		}
 
 	} 
@@ -85,15 +75,25 @@ abstract class BaseParametros extends BaseObject  implements Persistent {
 
 	} 
 	
+	public function setParValor($v)
+	{
+
+		if ($this->par_valor !== $v) {
+			$this->par_valor = $v;
+			$this->modifiedColumns[] = ParametrosPeer::PAR_VALOR;
+		}
+
+	} 
+	
 	public function hydrate(ResultSet $rs, $startcol = 1)
 	{
 		try {
 
 			$this->par_nombre = $rs->getString($startcol + 0);
 
-			$this->par_valor = $rs->getFloat($startcol + 1);
+			$this->par_ano = $rs->getString($startcol + 1);
 
-			$this->par_ano = $rs->getString($startcol + 2);
+			$this->par_valor = $rs->getFloat($startcol + 2);
 
 			$this->resetModified();
 
@@ -229,10 +229,10 @@ abstract class BaseParametros extends BaseObject  implements Persistent {
 				return $this->getParNombre();
 				break;
 			case 1:
-				return $this->getParValor();
+				return $this->getParAno();
 				break;
 			case 2:
-				return $this->getParAno();
+				return $this->getParValor();
 				break;
 			default:
 				return null;
@@ -245,8 +245,8 @@ abstract class BaseParametros extends BaseObject  implements Persistent {
 		$keys = ParametrosPeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getParNombre(),
-			$keys[1] => $this->getParValor(),
-			$keys[2] => $this->getParAno(),
+			$keys[1] => $this->getParAno(),
+			$keys[2] => $this->getParValor(),
 		);
 		return $result;
 	}
@@ -266,10 +266,10 @@ abstract class BaseParametros extends BaseObject  implements Persistent {
 				$this->setParNombre($value);
 				break;
 			case 1:
-				$this->setParValor($value);
+				$this->setParAno($value);
 				break;
 			case 2:
-				$this->setParAno($value);
+				$this->setParValor($value);
 				break;
 		} 	}
 
@@ -279,8 +279,8 @@ abstract class BaseParametros extends BaseObject  implements Persistent {
 		$keys = ParametrosPeer::getFieldNames($keyType);
 
 		if (array_key_exists($keys[0], $arr)) $this->setParNombre($arr[$keys[0]]);
-		if (array_key_exists($keys[1], $arr)) $this->setParValor($arr[$keys[1]]);
-		if (array_key_exists($keys[2], $arr)) $this->setParAno($arr[$keys[2]]);
+		if (array_key_exists($keys[1], $arr)) $this->setParAno($arr[$keys[1]]);
+		if (array_key_exists($keys[2], $arr)) $this->setParValor($arr[$keys[2]]);
 	}
 
 	
@@ -289,8 +289,8 @@ abstract class BaseParametros extends BaseObject  implements Persistent {
 		$criteria = new Criteria(ParametrosPeer::DATABASE_NAME);
 
 		if ($this->isColumnModified(ParametrosPeer::PAR_NOMBRE)) $criteria->add(ParametrosPeer::PAR_NOMBRE, $this->par_nombre);
-		if ($this->isColumnModified(ParametrosPeer::PAR_VALOR)) $criteria->add(ParametrosPeer::PAR_VALOR, $this->par_valor);
 		if ($this->isColumnModified(ParametrosPeer::PAR_ANO)) $criteria->add(ParametrosPeer::PAR_ANO, $this->par_ano);
+		if ($this->isColumnModified(ParametrosPeer::PAR_VALOR)) $criteria->add(ParametrosPeer::PAR_VALOR, $this->par_valor);
 
 		return $criteria;
 	}
@@ -301,6 +301,7 @@ abstract class BaseParametros extends BaseObject  implements Persistent {
 		$criteria = new Criteria(ParametrosPeer::DATABASE_NAME);
 
 		$criteria->add(ParametrosPeer::PAR_NOMBRE, $this->par_nombre);
+		$criteria->add(ParametrosPeer::PAR_ANO, $this->par_ano);
 
 		return $criteria;
 	}
@@ -308,13 +309,23 @@ abstract class BaseParametros extends BaseObject  implements Persistent {
 	
 	public function getPrimaryKey()
 	{
-		return $this->getParNombre();
+		$pks = array();
+
+		$pks[0] = $this->getParNombre();
+
+		$pks[1] = $this->getParAno();
+
+		return $pks;
 	}
 
 	
-	public function setPrimaryKey($key)
+	public function setPrimaryKey($keys)
 	{
-		$this->setParNombre($key);
+
+		$this->setParNombre($keys[0]);
+
+		$this->setParAno($keys[1]);
+
 	}
 
 	
@@ -323,12 +334,11 @@ abstract class BaseParametros extends BaseObject  implements Persistent {
 
 		$copyObj->setParValor($this->par_valor);
 
-		$copyObj->setParAno($this->par_ano);
-
 
 		$copyObj->setNew(true);
 
 		$copyObj->setParNombre(NULL); 
+		$copyObj->setParAno(NULL); 
 	}
 
 	
