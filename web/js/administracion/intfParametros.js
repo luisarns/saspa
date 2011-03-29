@@ -55,6 +55,7 @@ Saspa.parametros.parametros = {
       height     : 250
     });
     
+    var fecha_actual = new Date();
     
     var parmForm = new Ext.form.FormPanel({
       id    : 'formParametros',
@@ -87,7 +88,7 @@ Saspa.parametros.parametros = {
 	  id         : 'parm_ano',
 	  allowBlank : false,
 	  disabled   : true,
-	  value      : Date('Y')
+	  value      : fecha_actual.getFullYear()
 	},
 	{
 	  xtype      : 'textfield',

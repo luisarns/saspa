@@ -155,72 +155,71 @@ class simulacionActions extends sfActions
           $valorMatriculaAux[$i] = $newRejistro[$i];
         }
         
-      }else{
+      } else {
         
         //Postgrado el valor de matricula viene de Informacion general
-        
-		   if($tipoPago == "Valor Unico")
-		   {
-		     //indica si el arreglo nuevoRejistro ha cambiado
-		     $cambio  = false;
+	if($tipoPago == "Valor Unico")
+	{
+	    //indica si el arreglo nuevoRejistro ha cambiado
+	    $cambio  = false;
+
+	    //obtengo el valor de la matricula de la informacion general de la solicitud
+	    $valorMatricula = $informacionGeneral->getIngValor() * SMMLV;
+	    
+	    //Se guarda un unico valor de matricula por periodo
+	    $valorMatriculaAux = array_fill(1,$this->numeroPeriodos,$valorMatricula);
+
+	    if($formaPago == "Anual")
+	    {
+	      $valorMatricula = ($valorMatricula/2);
+	      $valorMatriculaAux = array_fill(1,$this->numeroPeriodos,$valorMatricula);
+	    }else if($formaPago == "Creditos")
+	    {
+		$numCreditoPeriodo = $this->creditosPeriodo($this->sol_id , $this->numeroPeriodos);
+		for($i = 1; $i <= $this->numeroPeriodos; $i++)
+		{
+		  //$datosResultadoIngresos[1][] numero de estudiantes matriculados
+		  $newRejistro[$i] = $datosResultadoIngresos[1][$i] * ($numCreditoPeriodo[$i] * $valorMatricula);
+		  $valorMatriculaAux[$i] = $newRejistro[$i];
+		}
+		$cambio = true;
+			
+	    }else if ($formaPago == "Total carrera")
+	    {
+	      $newRejistro[1] = $datosResultadoIngresos[1][1] * $valorMatricula;
+	      $cambio = true;
+	      
+	      //divido el valor total de la carrera en el numero de periodos, para obtener un valor por periodo de la matricula
+	      $valorMatriculaAux = array_fill(1,$this->numeroPeriodos,round($valorMatricula/$this->numeroPeriodos));
+	    }
 		     
-		     //obtengo el valor de la matricula de la informacion general de la solicitud
-		     $valorMatricula = $informacionGeneral->getIngValor() * SMMLV;
-		     
-		     //Se guarda un unico valor de matricula por periodo
-           $valorMatriculaAux = array_fill(1,$this->numeroPeriodos,$valorMatricula);
-		     
-		     if($formaPago == "Anual")
-		     {
-		       $valorMatricula = ($valorMatricula/2);
-		       $valorMatriculaAux = array_fill(1,$this->numeroPeriodos,$valorMatricula);
-		     }else if($formaPago == "Creditos")
-		     {
-		       $numCreditoPeriodo = $this->creditosPeriodo($this->sol_id , $this->numeroPeriodos);
-		       for($i = 1; $i <= $this->numeroPeriodos; $i++)
-		   	 {
-		   	 	//$datosResultadoIngresos[1][] numero de estudiantes matriculados
-		         $newRejistro[$i] = $datosResultadoIngresos[1][$i] * ($numCreditoPeriodo[$i] * $valorMatricula);
-		         $valorMatriculaAux[$i] = $newRejistro[$i];
-		       }
-		       $cambio = true;
-		       
-		     }else if ($formaPago == "Total carrera")
-		     {
-		       $newRejistro[1] = $datosResultadoIngresos[1][1] * $valorMatricula;
-		       $cambio = true;
-		       
-		       //divido el valor total de la carrera en el numero de periodos, para obtener un valor por periodo de la matricula
-		       $valorMatriculaAux = array_fill(1,$this->numeroPeriodos,round($valorMatricula/$this->numeroPeriodos));
-		     }
-		     
-		     if(!$cambio)
-		     {
-		       for($i = 1; $i <= $this->numeroPeriodos; $i++)
-		   	 {
-		   	   //$datosResultadoIngresos[1][] estudiantes matriculados
-		         $newRejistro[$i] = $datosResultadoIngresos[1][$i] * $valorMatricula;
-		       }
-		     }
-		            
-		   }else{
-		     //recupero el valor a pagar por matricula en cada periodo
-		     $c1 = new Criteria();
-		     $c1->add(ValorDiferenciadoPeer::VAD_ING_ID, $informacionGeneral->getIngId());
-		     $valorDiferenciado = ValorDiferenciadoPeer::doSelect($c1);
-		     foreach($valorDiferenciado as $valorDif)
-		     {
-		       $p = $valorDif->getVadPeriodo();
-		       $v = $valorDif->getVadValor() * SMMLV;
-		       $valorMatriculaAux[$p] = $v;
-		       $newRejistro[$p] = $datosResultadoIngresos[1][$p] * $v ; 
-		     }
-		     
-		   }
-		     
+	    if(!$cambio)
+	    {
+	      for($i = 1; $i <= $this->numeroPeriodos; $i++)
+	      {
+		    //$datosResultadoIngresos[1][] estudiantes matriculados
+		  $newRejistro[$i] = $datosResultadoIngresos[1][$i] * $valorMatricula;
+	      }
+	    }
+
+	  } else {
+	    //recupero el valor a pagar por matricula en cada periodo
+	    $c1 = new Criteria();
+	    $c1->add(ValorDiferenciadoPeer::VAD_ING_ID, $informacionGeneral->getIngId());
+	    $valorDiferenciado = ValorDiferenciadoPeer::doSelect($c1);
+	    foreach($valorDiferenciado as $valorDif)
+	    {
+	      $p = $valorDif->getVadPeriodo();
+	      $v = $valorDif->getVadValor() * SMMLV;
+	      $valorMatriculaAux[$p] = $v;
+	      $newRejistro[$p] = $datosResultadoIngresos[1][$p] * $v ; 
+	    }
+	    
+	  }
+	    
       }
 
-		array_push($datosResultadoIngresos,$newRejistro);//ingresos por matricula 2
+      array_push($datosResultadoIngresos,$newRejistro);//ingresos por matricula 2
       //Almacenar el valor de la matricula por periodo en la variable $valorMatriculaAux
       
       
@@ -317,7 +316,7 @@ class simulacionActions extends sfActions
       if($this->isPregrado($nivelAcademico))
       {
       	for($i = 1; $i <= $this->numeroPeriodos; $i++)
-        	$valorMatriculaAux[$i] = VALOR_MATRICULA_PREGRADO * $datosResultadoIngresos[1][$i];
+	    $valorMatriculaAux[$i] = VALOR_MATRICULA_PREGRADO * $datosResultadoIngresos[1][$i];
       }
       
       $rejistro = array_fill(1,$this->numeroPeriodos,0);
@@ -326,11 +325,11 @@ class simulacionActions extends sfActions
       {
         //$datosResultadoEgresos[5] total costos variables
         //$valorMatriculaAux[i] valores en el periodo i
-			$denominador = ($valorMatriculaAux[$i] > 0)?$valorMatriculaAux[$i]:1; //para evitar la division por 0 
-    		$rejistro[$i] =  $datosResultadoEgresos[5][$i] / $denominador;
+	$denominador = ($valorMatriculaAux[$i] > 0)?$valorMatriculaAux[$i]:1; //para evitar la division por 0 
+	$rejistro[$i] =  $datosResultadoEgresos[5][$i] / $denominador;
       }
       
-		array_push($datosPuntoEquilibrio,$rejistro);
+      array_push($datosPuntoEquilibrio,$rejistro);
       
       //envio los datos al servidor en un string json
       $this->rejistroIngresos   = json_encode($datosResultadoIngresos);      
