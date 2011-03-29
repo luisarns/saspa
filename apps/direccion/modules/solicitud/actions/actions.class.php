@@ -465,9 +465,7 @@ class solicitudActions extends sfActions
       $this->usu_identificador = $this->getUser()->getAttribute('usuario');
       return sfView::SUCCESS;
     }else{
-    	
-    	
-    	
+
       $siguiente = $this->getRequestParameter('siguiente');
       if(isset($siguiente))
       {
@@ -492,19 +490,12 @@ class solicitudActions extends sfActions
          $presupuestoEgreso->setPegSmOtroNombre($this->getRequestParameter('otro_nombre'));
          $presupuestoEgreso->setPegSmOtroValor($this->getRequestParameter('otro_sueldo'));
          
-
-         //por ahora no esta guardando por que esta en pruebas
          $presupuestoEgreso->save();
-         //descomentar la linea anterior para almacenar el registro en la BD
-         //----------------//Modificando arriba//---------------------//
-         
-         
-         //prueba recibiendo datos y regresando respuesta siguiente : true para probar que se esta actulizando en el cliente
+
         $salida = "{ success: true, urlFormulario: '".URL_SASPA."direccion_dev.php/solicitud/egresosGenerales'}";
         return $this->renderText($salida); 
       }
       
-      //cuando algo no salio bien 
       $salida = "{ success: false, error: 'No se puede procesar la solicitud'}";
       return $this->renderText($salida);
       

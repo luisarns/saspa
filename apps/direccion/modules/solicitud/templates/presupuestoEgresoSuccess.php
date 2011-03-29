@@ -34,14 +34,14 @@
   echo use_helper('Javascript');
   echo javascript_tag("
   
-	 var rejistroEgresos = '';
-	 var nivelAcademicoPrograma = '".$nivelAcademico."';
+    var rejistroEgresos = '';
+    var nivelAcademicoPrograma = '".$nivelAcademico."';
     rejistroEgresos = Ext.decode('".$updateEgresos."');
     
     //gridBecas.on('render',agregar);
 	 
 	
-	 var formPresupuestoEgreso = new Ext.form.FormPanel({
+      var formPresupuestoEgreso = new Ext.form.FormPanel({
       title      : 'Presupuesto egresos',
       url        : '".URL_SASPA."direccion_dev.php/solicitud/presupuestoEgreso',
       //width      : 800,
@@ -206,16 +206,16 @@
       Ext.getCmp('tfmonitorias').setValue(rejistroEgresos.monitorias);
       
       //agregar los registro de salarios los nombre de los campos
-     Ext.getCmp('saldireccion').setValue(rejistroEgresos.smdireccion);
-     Ext.getCmp('salcoordinacion').setValue(rejistroEgresos.smcoordinacion);
-     Ext.getCmp('otro_nombre').setValue(rejistroEgresos.smotronombre);
-     Ext.getCmp('otro_sueldo').setValue(rejistroEgresos.smotrovalor);
+      Ext.getCmp('saldireccion').setValue(rejistroEgresos.smdireccion);
+      Ext.getCmp('salcoordinacion').setValue(rejistroEgresos.smcoordinacion);
+      Ext.getCmp('otro_nombre').setValue(rejistroEgresos.smotronombre);
+      Ext.getCmp('otro_sueldo').setValue(rejistroEgresos.smotrovalor);
      
     }
 
 
 
-	 Saspa.PresupuestoEgreso = new Ext.Panel({
+    Saspa.PresupuestoEgreso = new Ext.Panel({
       renderTo: 'presupuestoEgreso',
       layout:   'column',
       style:    'width: 100%; height: 100%;', 
@@ -228,7 +228,5 @@
     Saspa.PresupuestoEgreso.render();
 	  
   ");
-  
-  //actualizarPanel('central','http://192.168.3.120/saspa/web/direccion_dev.php/solicitud/presupuestoEgreso');
   
 ?>

@@ -61,7 +61,6 @@
   
   echo use_helper('Javascript');
   echo javascript_tag("
-    //para llenar los campos del formulario cuando se trata de una actualizacion
     
     var rejistroIngresos = '';
     rejistroIngresos = Ext.decode('".$updateIngreso."');
@@ -87,14 +86,24 @@
       columnas[i] = {header : 'Periodo'+i, editor : new Ext.form.NumberField({
       allowBlank    : false,
       allowDecimals : true,
-      allowNegative : false}), dataIndex : ''+i};//contruyo las columnas
+      allowNegative : false}), dataIndex : ''+i, renderer : fmaPesos };
     }
     campos.push({name : 'id'});//el identificador de la entidad o convenio
     
     var store = new Ext.data.SimpleStore({
       fields : campos
     });
-    
+
+    function fmaPesos(val)
+    {
+      if(val > 1000)
+	      return '<span style=\"color:green;\">' + Ext.util.Format.usMoney(val) + '</span>';	
+      if(val < 0)
+	      return '<span style=\"color:red;\">' + Ext.util.Format.usMoney(val) + '</span>';
+      
+      return val;
+    }
+
     store.loadData(contribucionesFuentesPeriodos);
     
     var gridConvenios = new Ext.grid.EditorGridPanel({
@@ -250,7 +259,7 @@
 			   if(btn == 'yes')
 			   {
               var conveniosEntidades = [];
-              var modificados = store.getModifiedRecords();//gridConvenios.getStore().getModifiedRecords();
+              var modificados = store.getModifiedRecords();
               Ext.each(modificados, function (record){
                 conveniosEntidades.push(record.data);
               });
