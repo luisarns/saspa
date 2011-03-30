@@ -449,17 +449,20 @@ class simulacionActions extends sfActions
     $nomParametro = "Hora auxiliar";
     $salario_hora_auxiliar = $this->getValParametro($nomParametro,$anoParametro);
     
+    //Obteniendo el valor de la hora de monitoria
+    $nomParametro = "Hora monitor";
+    $salario_hora_monitor = $this->getValParametro($nomParametro,$anoParametro);
+    
 
     $valCordProgram = $presupuestoEgresos->getPegHseCordPrograma() * VALOR_HORA_DOCENTE;
     $valSecretaria = $presupuestoEgresos->getPegHseSecretaria() * $salario_hora_secretaria;
     $valAuxiliares = $presupuestoEgresos->getPegHseAuxAdministrativo() * $salario_hora_auxiliar;
-    $valMonitores = $presupuestoEgresos->getPegHseMonitorias() * VALOR_HORA_MONITORIAS;
+    $valMonitores = $presupuestoEgresos->getPegHseMonitorias() * $salario_hora_monitor;
     
     
     //DIRECCION Y COORDINACION SEDE REGIONAL
     $dirSedeRegional = $mesesPeriodo * $presupuestoEgresos->getPegSmDireccion();
     $coordSedeRegional = $mesesPeriodo * $presupuestoEgresos->getPegSmCoordinacion();
-    
     
     
     $gastosAdministrativos = $valMonitores + $valAuxiliares + $valSecretaria + $valDirPrograma;
