@@ -111,6 +111,23 @@ class simulacionActions extends sfActions
       $c1->add(PresupuestoIngresosPeer::PIN_SOL_ID, $this->sol_id);
       $presupuestoIngreso = PresupuestoIngresosPeer::doSelectOne($c1);
       
+      
+      //Obtengo el parametro salario minimo
+      $fechaSol     = $informacionGeneral->getIngFecha();
+      $nomParametro = "Salario minimo";
+      $anoParametro = substr($fechaSol,0,4);//"2011";
+      $salarioMinimo = ParametrosPeer::retrieveByPk($nomParametro,$anoParametro);
+      if(isset($salarioMinimo))
+      {
+	$salario_minimo = $salarioMinimo->getParValor();
+      } else {
+	$salario_minimo = 0;
+      }
+      //Fin
+      
+      
+
+
       $nuevoRejisto = array_fill(1,$this->numeroPeriodos,0);
       $nuevoRejisto[0] = "Estudiantes Inscritos";
       $nuevoRejisto[1] = $presupuestoIngreso->getPinNumeroInscritos();
@@ -136,9 +153,9 @@ class simulacionActions extends sfActions
       $formaPago = $informacionGeneral->getIngFormaPago();//Si es Valor Unico (Anual, Semestral, etc)       
       
       
-      
+      //creo el nombre del concepto a mostrar en la tabla
       $newRejistro = array_fill(1,$this->numeroPeriodos,0);
-      $newRejistro[0] = "Ingresos por Matricula";//creo el nombre del concepto a mostrar en la tabla
+      $newRejistro[0] = "Ingresos por Matricula";
       
       $valorMatricula;
       
@@ -164,7 +181,7 @@ class simulacionActions extends sfActions
 	    $cambio  = false;
 
 	    //obtengo el valor de la matricula de la informacion general de la solicitud
-	    $valorMatricula = $informacionGeneral->getIngValor() * SMMLV;
+	    $valorMatricula = $informacionGeneral->getIngValor() * $salario_minimo;
 	    
 	    //Se guarda un unico valor de matricula por periodo
 	    $valorMatriculaAux = array_fill(1,$this->numeroPeriodos,$valorMatricula);
@@ -173,6 +190,7 @@ class simulacionActions extends sfActions
 	    {
 	      $valorMatricula = ($valorMatricula/2);
 	      $valorMatriculaAux = array_fill(1,$this->numeroPeriodos,$valorMatricula);
+
 	    }else if($formaPago == "Creditos")
 	    {
 		$numCreditoPeriodo = $this->creditosPeriodo($this->sol_id , $this->numeroPeriodos);
@@ -191,6 +209,7 @@ class simulacionActions extends sfActions
 	      
 	      //divido el valor total de la carrera en el numero de periodos, para obtener un valor por periodo de la matricula
 	      $valorMatriculaAux = array_fill(1,$this->numeroPeriodos,round($valorMatricula/$this->numeroPeriodos));
+
 	    }
 		     
 	    if(!$cambio)
@@ -210,7 +229,7 @@ class simulacionActions extends sfActions
 	    foreach($valorDiferenciado as $valorDif)
 	    {
 	      $p = $valorDif->getVadPeriodo();
-	      $v = $valorDif->getVadValor() * SMMLV;
+	      $v = $valorDif->getVadValor() * $salario_minimo;
 	      $valorMatriculaAux[$p] = $v;
 	      $newRejistro[$p] = $datosResultadoIngresos[1][$p] * $v ; 
 	    }
