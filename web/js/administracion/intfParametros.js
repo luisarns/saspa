@@ -18,7 +18,7 @@ Saspa.parametros.parametros = {
     var parmColModel = new Ext.grid.ColumnModel([
       { header : "Nombre", dataIndex : 'paraNombre', sortable : true },
       { header : "Año",    dataIndex : 'paraAno',    sortable : true },
-      { header : "Valor",  dataIndex : 'paraValor',  sortable : true }
+      { header : "Valor",  dataIndex : 'paraValor',  sortable : true, renderer : Ext.util.Format.usMoney }
     ]);
     
     var parmSelModel = new Ext.grid.RowSelectionModel({
