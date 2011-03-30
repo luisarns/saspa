@@ -116,13 +116,7 @@ class simulacionActions extends sfActions
       $fechaSol     = $informacionGeneral->getIngFecha();
       $nomParametro = "Salario minimo";
       $anoParametro = substr($fechaSol,0,4);//"2011";
-      $salarioMinimo = ParametrosPeer::retrieveByPk($nomParametro,$anoParametro);
-      if(isset($salarioMinimo))
-      {
-	$salario_minimo = $salarioMinimo->getParValor();
-      } else {
-	$salario_minimo = 0;
-      }
+      $salario_minimo = $this->getValParametro($nomParametro,$anoParametro);
       //Fin
       
       
@@ -443,9 +437,22 @@ class simulacionActions extends sfActions
     	$valDirPrograma = GASTOS_REPRESENTACION;
     }
     
+    //Obteniendo el valor de la hora de la secretaria
+    $fechaSol     = $informacionGeneral->getIngFecha();
+    $anoParametro = substr($fechaSol,0,4);
+
+    $nomParametro = "Hora secretaria";    
+    $salario_hora_secretaria = $this->getValParametro($nomParametro,$anoParametro);
+    
+    
+    //Obteniedo el valor de la hora auxiliar
+    $nomParametro = "Hora auxiliar";
+    $salario_hora_auxiliar = $this->getValParametro($nomParametro,$anoParametro);
+    
+
     $valCordProgram = $presupuestoEgresos->getPegHseCordPrograma() * VALOR_HORA_DOCENTE;
-    $valSecretaria = $presupuestoEgresos->getPegHseSecretaria() * VALOR_HORA_SECRETARIA;
-    $valAuxiliares = $presupuestoEgresos->getPegHseAuxAdministrativo() * VALOR_HORA_AUXILIARES;
+    $valSecretaria = $presupuestoEgresos->getPegHseSecretaria() * $salario_hora_secretaria;
+    $valAuxiliares = $presupuestoEgresos->getPegHseAuxAdministrativo() * $salario_hora_auxiliar;
     $valMonitores = $presupuestoEgresos->getPegHseMonitorias() * VALOR_HORA_MONITORIAS;
     
     
@@ -524,8 +531,19 @@ class simulacionActions extends sfActions
     return $datosResultadoEgresos;
   }
   
-  //--------------Modificando esta parte arriba----------------------//
-  
+  /**
+  * Retorna el valor asignado a un parametro en un año
+  * @param $nombre : nombre del parametro
+  * @param $ano : año del parametro
+  * @return integer valor;
+  */
+  private function getValParametro($nombre,$ano) {
+      $parametro = ParametrosPeer::retrieveByPk($nombre,$ano);
+      if(isset($parametro)) {
+	return $parametro->getParValor();
+      }
+      return 0;    
+  }
   
   
   

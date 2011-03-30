@@ -71,9 +71,9 @@ Saspa.parametros.parametros = {
 	  mode       : 'local',
 	  store      : [
 	    'Salario minimo',
-	    'Salario secretaria',
-	    'Salario auxiliar',
-	    'Salario monitor',
+	    'Hora secretaria',
+	    'Hora auxiliar',
+	    'Hora monitor',
 	    '(%) Prestaciones x año'
 	  ],
 	  triggerAction  : 'all',
